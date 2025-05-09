@@ -91,10 +91,10 @@ exports.createPost = async (req, res) => {
 
 exports.deletePost = async (req, res) => {
   try {
-    const { id } = req.params;
+    const postId = parseInt(req.params.id);  
 
     const existingPost = await prisma.post.findUnique({
-      where: { id: parseInt(id) },
+      where: { id: postId },
       include: { comments: true },
     });
 
@@ -107,11 +107,11 @@ exports.deletePost = async (req, res) => {
     }
 
     await prisma.comment.deleteMany({
-      where: { postId: parseInt(id) },
+      where: { postId },
     });
-
+    
     await prisma.post.delete({
-      where: { id: parseInt(id) },
+      where: { id: postId },
     });
 
     res.json({ message: "Post successfully deleted" });
@@ -120,3 +120,4 @@ exports.deletePost = async (req, res) => {
     res.status(500).json({ error: "Server error while deleting post" });
   }
 };
+
