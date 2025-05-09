@@ -38,3 +38,30 @@ exports.createComment = async (req, res) => {
     res.status(500).json({ error: 'Failed to create comment' });
   }
 };
+
+exports.deleteComment = async(req,res) =>{
+    try{
+        const { commentId }=req.params;
+        const userId = parseInt(req.user.id); 
+        
+        const existingComment = await prisma.comment.findUnique({
+            where: {id: parseInt(commentId)}
+        });
+
+        if(!existingComment){
+            return res.status(404).json({error:'Comment does not exist'})
+        }
+        if(existingComment.authorId !== userId){
+            return res.status(403).json({error: 'You are not authorized to delete this comment'})
+        }
+
+         await prisma.comment.delete({
+            where:{id: parseInt(commentId)},
+        });
+
+        res.json({message:'comment successfully deleted'});
+    }catch (error){
+        console.log('Error deleting comment', error);
+        res.status(500).json({error: 'Server error while deleting comment'})
+    }
+} 
