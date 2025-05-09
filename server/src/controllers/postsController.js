@@ -14,7 +14,7 @@ exports.getAllPosts = async (req, res) => {
     });
     const userIds = [currentUserId];
 
-    follows.forEach(f => {
+    follows.forEach((f) => {
       if (f.followerId !== currentUserId) userIds.push(f.followerId);
       if (f.followingId !== currentUserId) userIds.push(f.followingId);
     });
@@ -37,8 +37,6 @@ exports.getAllPosts = async (req, res) => {
     res.status(500).json({ error: "Server error while fetching posts" });
   }
 };
-
-
 
 exports.getPostById = async (req, res) => {
   try {
@@ -91,7 +89,7 @@ exports.createPost = async (req, res) => {
 
 exports.deletePost = async (req, res) => {
   try {
-    const postId = parseInt(req.params.id);  
+    const postId = parseInt(req.params.id);
 
     const existingPost = await prisma.post.findUnique({
       where: { id: postId },
@@ -103,13 +101,15 @@ exports.deletePost = async (req, res) => {
     }
 
     if (existingPost.authorId !== req.user.id) {
-      return res.status(403).json({ error: "You are not authorized to delete this post" });
+      return res
+        .status(403)
+        .json({ error: "You are not authorized to delete this post" });
     }
 
     await prisma.comment.deleteMany({
       where: { postId },
     });
-    
+
     await prisma.post.delete({
       where: { id: postId },
     });
@@ -120,4 +120,3 @@ exports.deletePost = async (req, res) => {
     res.status(500).json({ error: "Server error while deleting post" });
   }
 };
-
