@@ -20,6 +20,17 @@ exports.createComment = async (req, res) => {
     return res.status(404).json({ error: 'User not found' });
   }
 
+  const postExists = await prisma.postExist.findUnique({
+    where:{
+      id: parseInt(postId, 10)
+    }
+  });
+
+  if (!postExists) {
+    return res.status(404).json({ error: 'Post not found' });
+  }
+
+  
   try {
     const newComment = await prisma.comment.create({
       data: {
@@ -51,9 +62,10 @@ exports.deleteComment = async(req,res) =>{
         if(!existingComment){
             return res.status(404).json({error:'Comment does not exist'})
         }
+
         if(existingComment.authorId !== userId){
             return res.status(403).json({error: 'You are not authorized to delete this comment'})
-        }
+        }//or is admin 
 
          await prisma.comment.delete({
             where:{id: parseInt(commentId)},
