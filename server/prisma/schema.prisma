@@ -15,13 +15,13 @@ model User{
   password  String?
   gender    Gender   @default (NON_SPECIFIED)
   profilePicture String? //optional
-
+  
   posts     Post []
   comments  Comment[]
   likes     Like[]
 
-  sentFollows     UserFollow[] @relation("UserSentFollows")
-  receivedFollows UserFollow[] @relation("UserReceivedFollows")
+  sentFollows     UserFollow[] @relation("Following")
+  receivedFollows UserFollow[] @relation("Followers")
 }
 
 model Post{
@@ -63,9 +63,9 @@ model UserFollow {
   id          Int                  @id @default(autoincrement())
   status      FollowRequestStatus @default(PENDING)
  
-  follower    User @relation("UserSentFollows", fields: [followerId], references: [id])
+  follower    User @relation("Following", fields: [followerId], references: [id])
   followerId  Int
-  following   User @relation("UserReceivedFollows", fields: [followingId], references: [id])
+  following   User @relation("Followers", fields: [followingId], references: [id])
   followingId Int
   
   createdAt   DateTime            @default(now())
