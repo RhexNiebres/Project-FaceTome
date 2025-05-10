@@ -7,7 +7,9 @@ exports.getFollowers = async (req, res) => {
   const status = (req.query.status || "PENDING").toUpperCase();
 
   if (!allowedStatuses.includes(status)) {
-    return res.status(400).json({ error: "Invalid status. Must be 'PENDING' or 'ACCEPTED'." });
+    return res
+      .status(400)
+      .json({ error: "Invalid status. Must be 'PENDING' or 'ACCEPTED'." });
   }
 
   try {
@@ -21,12 +23,11 @@ exports.getFollowers = async (req, res) => {
       },
     });
 
-    res.json(followers.map(f => f.follower));
+    res.json(followers.map((f) => f.follower));
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch followers." });
   }
 };
-
 
 exports.getFollowing = async (req, res) => {
   const { userId } = req.params;
@@ -34,7 +35,9 @@ exports.getFollowing = async (req, res) => {
   const status = (req.query.status || "ACCEPTED").toUpperCase();
 
   if (!allowedStatuses.includes(status)) {
-    return res.status(400).json({ error: "Invalid status. Must be 'PENDING' or 'ACCEPTED'." });
+    return res
+      .status(400)
+      .json({ error: "Invalid status. Must be 'PENDING' or 'ACCEPTED'." });
   }
   try {
     const following = await prisma.userFollow.findMany({
@@ -73,17 +76,16 @@ exports.sendFollowRequest = async (req, res) => {
 
     if (existingFollowing) {
       return res.status(400).json({ error: "Follow request already exists." });
-    }//else return pending 
-
-    const followRequest = await prisma.userFollow.create({
-      data: {
-        followerId,
-        followingId,
-        status: "PENDING",
-      },
-    });
-
-    res.status(201).json(followRequest);
+    } else {
+      const followRequest = await prisma.userFollow.create({
+        data: {
+          followerId,
+          followingId,
+          status: "PENDING",
+        },
+      });
+       res.status(201).json(followRequest);
+    }
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal server error." });
