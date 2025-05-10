@@ -3,32 +3,44 @@ const prisma = new PrismaClient();
 
 exports.getFollowers = async (req, res) => {
   const { userId } = req.params;
+  const allowedStatuses = ["PENDING", "ACCEPTED"];
+  const status = (req.query.status || "PENDING").toUpperCase();
+
+  if (!allowedStatuses.includes(status)) {
+    return res.status(400).json({ error: "Invalid status. Must be 'PENDING' or 'ACCEPTED'." });
+  }
 
   try {
     const followers = await prisma.userFollow.findMany({
       where: {
         followingId: parseInt(userId),
-        status: "PENDING",
+        status,
       },
       include: {
         follower: true,
       },
     });
 
-    res.json(followers.map((f) => f.follower));
+    res.json(followers.map(f => f.follower));
   } catch (err) {
     res.status(500).json({ error: "Failed to fetch followers." });
   }
 };
 
+
 exports.getFollowing = async (req, res) => {
   const { userId } = req.params;
+  const allowedStatuses = ["PENDING", "ACCEPTED"];
+  const status = (req.query.status || "ACCEPTED").toUpperCase();
 
+  if (!allowedStatuses.includes(status)) {
+    return res.status(400).json({ error: "Invalid status. Must be 'PENDING' or 'ACCEPTED'." });
+  }
   try {
     const following = await prisma.userFollow.findMany({
       where: {
         followerId: parseInt(userId),
-        status: "ACCEPTED",
+        status,
       },
       include: {
         following: true,
@@ -50,7 +62,7 @@ exports.sendFollowRequest = async (req, res) => {
   }
 
   try {
-    const existing = await prisma.userFollow.findUnique({
+    const existingFollowing = await prisma.userFollow.findUnique({
       where: {
         followerId_followingId: {
           followerId,
@@ -59,9 +71,9 @@ exports.sendFollowRequest = async (req, res) => {
       },
     });
 
-    if (existing) {
+    if (existingFollowing) {
       return res.status(400).json({ error: "Follow request already exists." });
-    }
+    }//else return pending 
 
     const followRequest = await prisma.userFollow.create({
       data: {
