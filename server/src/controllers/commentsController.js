@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 exports.createComment = async (req, res) => {
   const { postId } = req.params;
   const { content } = req.body;
-  const userId = parseInt(req.user.id, 10); 
+  const userId = parseInt(req.user.id); 
 
   if (!content) {
     return res.status(400).json({ error: 'Content is required' });
@@ -20,9 +20,9 @@ exports.createComment = async (req, res) => {
     return res.status(404).json({ error: 'User not found' });
   }
 
-  const postExists = await prisma.postExist.findUnique({
+  const postExists = await prisma.post.findUnique({
     where:{
-      id: parseInt(postId, 10)
+      id: parseInt(postId)
     }
   });
 
@@ -35,7 +35,7 @@ exports.createComment = async (req, res) => {
     const newComment = await prisma.comment.create({
       data: {
         content,
-        postId: parseInt(postId, 10), 
+        postId: parseInt(postId), 
         authorId: userId,
       },
       include: {
@@ -62,10 +62,16 @@ exports.deleteComment = async(req,res) =>{
         if(!existingComment){
             return res.status(404).json({error:'Comment does not exist'})
         }
+        const user = await prisma.user.findUnique({
+           where: {id:userId}
+        });
 
-        if(existingComment.authorId !== userId){
+        if(!user){
+          return res.status(404).json({error:'User not found'})
+        }
+        if(existingComment.authorId !== userId && !user.isAdmin){
             return res.status(403).json({error: 'You are not authorized to delete this comment'})
-        }//or is admin 
+        }
 
          await prisma.comment.delete({
             where:{id: parseInt(commentId)},
