@@ -12,7 +12,7 @@ model User{
   id        Int      @id @default(autoincrement())
   email     String   @unique
   username  String   @unique
-  password  String
+  password  String?
   gender    Gender   @default (NON_SPECIFIED)
   profilePicture String? //optional
 
@@ -62,7 +62,7 @@ model Like{
 model UserFollow {
   id          Int                  @id @default(autoincrement())
   status      FollowRequestStatus @default(PENDING)
-
+ 
   follower    User @relation("UserSentFollows", fields: [followerId], references: [id])
   followerId  Int
   following   User @relation("UserReceivedFollows", fields: [followingId], references: [id])
