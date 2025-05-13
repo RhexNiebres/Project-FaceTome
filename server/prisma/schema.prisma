@@ -20,8 +20,8 @@ model User{
   comments  Comment[]
   likes     Like[]
 
-  sentFollows     UserFollow[] @relation("Following")
-  receivedFollows UserFollow[] @relation("Followers")
+  followings     UserFollow[] @relation("Followings")
+  followers UserFollow[] @relation("Followers")
 }
 
 model Post{
@@ -63,9 +63,9 @@ model UserFollow {
   id          Int                  @id @default(autoincrement())
   status      FollowRequestStatus @default(PENDING)
  
-  follower    User @relation("Following", fields: [followerId], references: [id])
+  follower    User @relation("Followers", fields: [followerId], references: [id])
   followerId  Int
-  following   User @relation("Followers", fields: [followingId], references: [id])
+  following   User @relation("Followings", fields: [followingId], references: [id])
   followingId Int
   
   createdAt   DateTime            @default(now())
