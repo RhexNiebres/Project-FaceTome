@@ -1,27 +1,27 @@
-const { PrismaClient } = require("@prisma/client");
+const { PrismaClient, Prisma } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 exports.getAllPosts = async (req, res) => {
   try {
     const currentUserId = req.user.id;
-    const follows = await prisma.userFollow.findMany({
-      where: {
-        OR: [
-          { followerId: currentUserId, status: "ACCEPTED" },
-          { followingId: currentUserId, status: "ACCEPTED" },
-        ],
-      },
-    });
-    const userIds = [currentUserId];
-
-    follows.forEach((f) => {
-      if (f.followerId !== currentUserId) userIds.push(f.followerId);
-      if (f.followingId !== currentUserId) userIds.push(f.followingId);
-    });
-
     const posts = await prisma.post.findMany({
       where: {
-        authorId: { in: userIds },
+        OR: [
+          { authorId: currentUserId }, 
+          {
+            authorId: {
+              in: await prisma.userFollow.findMany({
+                where: {
+                  followerId: currentUserId,
+                  status: Prisma.FollowRequestStatus.ACCEPTED,
+                },
+                select: {
+                  followingId: true, 
+                },
+              }).then((follows) => follows.map((follow) => follow.followingId)), 
+            },
+          },
+        ],
       },
       include: {
         author: { select: { username: true } },
@@ -38,34 +38,34 @@ exports.getAllPosts = async (req, res) => {
   }
 };
 
-exports.getPostById = async (req, res) => {
-  try {
-    const { id } = req.params;
+// exports.getPostById = async (req, res) => { // to be considered double check in specks
+//   try {
+//     const { id } = req.params;
 
-    const post = await prisma.post.findUnique({
-      where: { id: parseInt(id) },
-      include: {
-        author: { select: { username: true } },
-        comments: { include: { author: true } },
-        likes: true,
-      },
-    });
+//     const post = await prisma.post.findUnique({
+//       where: { id: parseInt(id) },
+//       include: {
+//         author: { select: { username: true } },
+//         comments: { include: { author: true } },
+//         likes: true,
+//       },
+//     });
 
-    if (!post) {
-      return res.status(404).json({ error: "Post not Found" });
-    }
-    res.json(post);
-  } catch (error) {
-    console.error("Error fetching post:", error);
-    res.status(500).json({ error: "Server error while fetching post" });
-  }
-};
+//     if (!post) {
+//       return res.status(404).json({ error: "Post not Found" });
+//     }
+//     res.json(post);
+//   } catch (error) {
+//     console.error("Error fetching post:", error);
+//     res.status(500).json({ error: "Server error while fetching post" });
+//   }
+// };
 
 exports.createPost = async (req, res) => {
   try {
     const { title, content } = req.body;
     const authorId = req.user.id;
-
+    //check if there is a title already exist pls create another: usernmae post about this title pls create a different post else create post
     if (!title || !content || !authorId) {
       return res
         .status(400)
@@ -87,7 +87,7 @@ exports.createPost = async (req, res) => {
   }
 };
 
-exports.deletePost = async (req, res) => {
+exports.deletePost = async (req, res) => {//only delete if author and admin
   try {
     const postId = parseInt(req.params.id);
 
@@ -95,10 +95,6 @@ exports.deletePost = async (req, res) => {
       where: { id: postId },
       include: { comments: true },
     });
-
-    if (!existingPost) {
-      return res.status(404).json({ error: "Post not found" });
-    }
 
     if (existingPost.authorId !== req.user.id) {
       return res
