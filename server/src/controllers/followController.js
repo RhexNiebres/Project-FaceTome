@@ -1,22 +1,19 @@
-const { PrismaClient } = require("@prisma/client");
+const { PrismaClient,Prisma } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 exports.getFollowers = async (req, res) => {
   const { userId } = req.params;
-  const allowedStatuses = ["PENDING", "ACCEPTED"];
-  const status = (req.query.status || "PENDING").toUpperCase();
-
-  if (!allowedStatuses.includes(status)) {
-    return res
-      .status(400)
-      .json({ error: "Invalid status. Must be 'PENDING' or 'ACCEPTED'." });
-  }
 
   try {
     const followers = await prisma.userFollow.findMany({
       where: {
         followingId: parseInt(userId),
-        status,
+        status: {
+          in: [
+            Prisma.FollowRequestStatus.PENDING,
+            Prisma.FollowRequestStatus.ACCEPTED,
+          ],// to filter only the desired statuses.
+        },
       },
       include: {
         follower: true,
@@ -31,19 +28,17 @@ exports.getFollowers = async (req, res) => {
 
 exports.getFollowing = async (req, res) => {
   const { userId } = req.params;
-  const allowedStatuses = ["PENDING", "ACCEPTED"];
-  const status = (req.query.status || "ACCEPTED").toUpperCase();
 
-  if (!allowedStatuses.includes(status)) {
-    return res
-      .status(400)
-      .json({ error: "Invalid status. Must be 'PENDING' or 'ACCEPTED'." });
-  }
   try {
     const following = await prisma.userFollow.findMany({
       where: {
         followerId: parseInt(userId),
-        status,
+        status: {
+          in: [
+            Prisma.FollowRequestStatus.PENDING,
+            Prisma.FollowRequestStatus.ACCEPTED,
+          ],
+        },
       },
       include: {
         following: true,
@@ -55,6 +50,7 @@ exports.getFollowing = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch following." });
   }
 };
+
 
 exports.sendFollowRequest = async (req, res) => {
   const { followingId } = req.body;
@@ -81,7 +77,7 @@ exports.sendFollowRequest = async (req, res) => {
         data: {
           followerId,
           followingId,
-          status: "PENDING",
+          status: Prisma.FollowRequestStatus.PENDING,
         },
       });
        res.status(201).json(followRequest);
@@ -98,7 +94,7 @@ exports.acceptFollowRequest = async (req, res) => {
   try {
     const followRequest = await prisma.userFollow.update({
       where: { id: parseInt(id) },
-      data: { status: "ACCEPTED" },
+      data: { status: Prisma.FollowRequestStatus.ACCEPTED },
     });
 
     res.json(followRequest);
@@ -114,7 +110,7 @@ exports.rejectFollowRequest = async (req, res) => {
   try {
     const followRequest = await prisma.userFollow.update({
       where: { id: parseInt(id) },
-      data: { status: "REJECTED" },
+      data: { status: Prisma.FollowRequestStatus.REJECTED},
     });
 
     res.json(followRequest);
