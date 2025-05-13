@@ -7,18 +7,20 @@ exports.getAllPosts = async (req, res) => {
     const posts = await prisma.post.findMany({
       where: {
         OR: [
-          { authorId: currentUserId }, 
+          { authorId: currentUserId },
           {
             authorId: {
-              in: await prisma.userFollow.findMany({
-                where: {
-                  followerId: currentUserId,
-                  status: Prisma.FollowRequestStatus.ACCEPTED,
-                },
-                select: {
-                  followingId: true, 
-                },
-              }).then((follows) => follows.map((follow) => follow.followingId)), 
+              in: await prisma.userFollow
+                .findMany({
+                  where: {
+                    followerId: currentUserId,
+                    status: Prisma.FollowRequestStatus.ACCEPTED,
+                  },
+                  select: {
+                    followingId: true,
+                  },
+                })
+                .then((follows) => follows.map((follow) => follow.followingId)),
             },
           },
         ],
@@ -38,7 +40,6 @@ exports.getAllPosts = async (req, res) => {
   }
 };
 
-
 exports.createPost = async (req, res) => {
   try {
     const { title, content } = req.body;
@@ -49,7 +50,7 @@ exports.createPost = async (req, res) => {
         .status(400)
         .json({ error: "Title, content and user are required" });
     }
-    
+
     const existingPost = await prisma.post.findFirst({
       where: {
         title,
@@ -77,20 +78,21 @@ exports.createPost = async (req, res) => {
   }
 };
 
-
-exports.deletePost = async (req, res) => {//only delete if author and admin
+exports.deletePost = async (req, res) => {
   try {
     const postId = parseInt(req.params.id);
+    const { id: userId, isAdmin } = req.user;
 
-    const existingPost = await prisma.post.findUnique({
+    const post = await prisma.post.findUnique({
       where: { id: postId },
-      include: { comments: true },
     });
 
-    if (existingPost.authorId !== req.user.id) {
-      return res
-        .status(403)
-        .json({ error: "You are not authorized to delete this post" });
+    if (!post) {
+      return res.status(404).json({ error: "Post not found" });
+    }
+
+    if(post.authorId !== userId && isAdmin){
+      return res.status(403).json({error: "You are no authorized to delete this post"})
     }
 
     await prisma.comment.deleteMany({
