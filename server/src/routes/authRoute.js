@@ -7,13 +7,13 @@ router.post("/sign-up", authController.postSignUp);
 router.post("/log-in", authController.postLogin);
 
 router.get(
-    "/auth/github",
-    passport.authenticate("github", { scope: ["user:email"] })
+    "/auth/google",
+    passport.authenticate("google", { scope: ["email","profile"] })
   );
   
   router.get(
-    "/auth/github/callback",
-    passport.authenticate("github", { session: false, failureRedirect: "/" }),
+    "/auth/google/callback",
+    passport.authenticate("google", { session: false, failureRedirect: "/" }),
     (req, res) => {
       const { token, id, username, email, profilePicture } = req.user;
       res.redirect(
