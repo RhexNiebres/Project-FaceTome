@@ -38,28 +38,6 @@ exports.getAllPosts = async (req, res) => {
   }
 };
 
-// exports.getPostById = async (req, res) => { // to be considered double check in specks
-//   try {
-//     const { id } = req.params;
-
-//     const post = await prisma.post.findUnique({
-//       where: { id: parseInt(id) },
-//       include: {
-//         author: { select: { username: true } },
-//         comments: { include: { author: true } },
-//         likes: true,
-//       },
-//     });
-
-//     if (!post) {
-//       return res.status(404).json({ error: "Post not Found" });
-//     }
-//     res.json(post);
-//   } catch (error) {
-//     console.error("Error fetching post:", error);
-//     res.status(500).json({ error: "Server error while fetching post" });
-//   }
-// };
 
 exports.createPost = async (req, res) => {
   try {
