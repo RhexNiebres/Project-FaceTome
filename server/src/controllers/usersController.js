@@ -1,4 +1,4 @@
-const { PrismaClient } = require("../generated/prisma");
+const { PrismaClient, Prisma } = require("../generated/prisma");
 const prisma = new PrismaClient();
 const bcrypt = require("bcryptjs");
 
@@ -10,33 +10,62 @@ exports.getAllUsers = async (req, res) => {
   }
 
   try {
-    const users = await prisma.user.findMany({
-      where: {
-        id: { not: currentUserId },
-      },
-      include: {
-        receivedFollows: {
-          where: { followerId: currentUserId },
-          select: { status: true },
+    const [following, followers] = await Promise.all([
+      prisma.userFollow.findMany({
+        where: {
+          followerId: userId,
+          status: {
+            in: [
+              Prisma.FollowRequestStatus.PENDING,
+              Prisma.FollowRequestStatus.ACCEPTED,
+            ],
+          },
         },
-      },
-    });
+        include: {
+          following: true,
+        },
+      }),
+      prisma.userFollow.findMany({
+        where: {
+          followingId: userId,
+          status: {
+            in: [
+              Prisma.FollowRequestStatus.PENDING,
+              Prisma.FollowRequestStatus.ACCEPTED,
+            ],
+          },
+        },
+        include: {
+          follower: true,
+        },
+      }),
+    ]);
 
-    const formattedUsers = users.map(user => ({
-      id: user.id,
+    const usersMap = new Map();
+
+    const formatUser = (user, status) => ({
       username: user.username,
-      email: user.email,
-      profilePicture: user.profilePicture, 
-      followStatus: user.receivedFollows.length ? user.receivedFollows[0].status : "",
-    }));
+      profilePicture: user.profilePicture,
+      followStatus: status,
+    });
+    for (const f of following) {
+      usersMap.set(f.following.id, formatUser(f.following, f.status));
+    }
 
-    res.status(200).json(formattedUsers);
-  } catch (error) {
-    console.error("Error fetching users:", error);
-    res.status(500).json({ error: "Error fetching users" });
+    for (const f of followers) {
+      if (!usersMap.has(f.follower.id)) {
+        usersMap.set(f.follower.id, formatUser(f.follower, f.status));
+      }
+    }
+
+    const Users = Array.from(usersMap.values());
+
+    res.status(200).json(Users);
+  } catch (err) {
+    console.message("Failed to fetch users:", err);
+    res.status(500).json({ error: "Failed to fetch users." });
   }
 };
-
 
 exports.getUserById = async (req, res) => {
   const { id } = req.params;
@@ -57,10 +86,12 @@ exports.getUserById = async (req, res) => {
 };
 
 exports.updateUser = async (req, res) => {
+  //current user or isAdmin to update anything
   const { id } = req.params;
   const { email, username, password, gender } = req.body;
 
   try {
+    //add check if current user is updating account or admin
     const existingDifferentUser = await prisma.user.findFirst({
       where: {
         AND: [
@@ -128,4 +159,3 @@ exports.updateUser = async (req, res) => {
     res.status(500).json({ error: "Error updating user information" });
   }
 };
-
