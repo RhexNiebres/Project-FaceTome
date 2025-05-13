@@ -86,12 +86,13 @@ exports.getUserById = async (req, res) => {
 };
 
 exports.updateUser = async (req, res) => {
-  //current user or isAdmin to update anything
   const { id } = req.params;
   const { email, username, password, gender } = req.body;
-
+  const { id: userId, isAdmin } = req.user;
   try {
-    //add check if current user is updating account or admin
+    if (parseInt(id) !== userId && !isAdmin) {
+    return res.status(403).json({ error: "You are not authorized to update this user" });
+  }
     const existingDifferentUser = await prisma.user.findFirst({
       where: {
         AND: [
