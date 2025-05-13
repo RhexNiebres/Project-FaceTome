@@ -43,11 +43,23 @@ exports.createPost = async (req, res) => {
   try {
     const { title, content } = req.body;
     const authorId = req.user.id;
-    //check if there is a title already exist pls create another: usernmae post about this title pls create a different post else create post
+
     if (!title || !content || !authorId) {
       return res
         .status(400)
         .json({ error: "Title, content and user are required" });
+    }
+    
+    const existingPost = await prisma.post.findFirst({
+      where: {
+        title,
+      },
+    });
+
+    if (existingPost) {
+      return res.status(400).json({
+        error: `A post titled "${title}" already exists. Please use a different title.`,
+      });
     }
 
     const newPost = await prisma.post.create({
@@ -64,6 +76,7 @@ exports.createPost = async (req, res) => {
     res.status(500).json({ error: "Server error while creating post" });
   }
 };
+
 
 exports.deletePost = async (req, res) => {//only delete if author and admin
   try {
