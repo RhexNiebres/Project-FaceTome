@@ -91,7 +91,7 @@ exports.deletePost = async (req, res) => {
       return res.status(404).json({ error: "Post not found" });
     }
 
-    if(post.authorId !== userId && isAdmin){
+    if(post.authorId !== userId && !isAdmin){
       return res.status(403).json({error: "You are no authorized to delete this post"})
     }
 
