@@ -44,7 +44,6 @@ exports.getAllPosts = async (req, res) => {
   }
 };
 
-
 exports.createPost = async (req, res) => {
   try {
     const { title, content } = req.body;
