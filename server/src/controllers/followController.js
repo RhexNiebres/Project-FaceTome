@@ -1,4 +1,4 @@
-const { PrismaClient,Prisma } = require("@prisma/client");
+const { PrismaClient, Prisma } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 exports.getFollowers = async (req, res) => {
@@ -12,7 +12,7 @@ exports.getFollowers = async (req, res) => {
           in: [
             Prisma.FollowRequestStatus.PENDING,
             Prisma.FollowRequestStatus.ACCEPTED,
-          ],// to filter only the desired statuses.
+          ], // to filter only the desired statuses.
         },
       },
       include: {
@@ -51,7 +51,6 @@ exports.getFollowing = async (req, res) => {
   }
 };
 
-
 exports.sendFollowRequest = async (req, res) => {
   const { followingId } = req.body;
   const followerId = req.user.id;
@@ -61,27 +60,25 @@ exports.sendFollowRequest = async (req, res) => {
   }
 
   try {
-    const existingFollowing = await prisma.userFollow.findUnique({
+    const followRequest = await prisma.userFollow.upsert({
       where: {
         followerId_followingId: {
           followerId,
           followingId,
         },
       },
+      update: {},
+      create: {
+        followerId,
+        followingId,
+        status: Prisma.FollowRequestStatus.PENDING,
+      },
     });
 
-    if (existingFollowing) {
+    if (followRequest.status !== Prisma.FollowRequestStatus.PENDING) {
       return res.status(400).json({ error: "Follow request already exists." });
-    } else {
-      const followRequest = await prisma.userFollow.create({
-        data: {
-          followerId,
-          followingId,
-          status: Prisma.FollowRequestStatus.PENDING,
-        },
-      });
-       res.status(201).json(followRequest);
     }
+    res.status(201).json(followRequest);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Internal server error." });
@@ -100,7 +97,7 @@ exports.acceptFollowRequest = async (req, res) => {
     res.json(followRequest);
   } catch (err) {
     console.error(err);
-    res.status(404).json({ error: "Follow request not found." });
+    res.status(404).json({ error: "Follow request was not accepted." });
   }
 };
 
@@ -110,7 +107,7 @@ exports.rejectFollowRequest = async (req, res) => {
   try {
     const followRequest = await prisma.userFollow.update({
       where: { id: parseInt(id) },
-      data: { status: Prisma.FollowRequestStatus.REJECTED},
+      data: { status: Prisma.FollowRequestStatus.REJECTED },
     });
 
     res.json(followRequest);
