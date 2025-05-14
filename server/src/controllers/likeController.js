@@ -1,4 +1,4 @@
-const { PrismaClient } = require("@prisma/client");
+const { PrismaClient } = require("../generated/prisma");
 const prisma = new PrismaClient();
 
 exports.toggleLikePost = async (req, res) => {
@@ -6,7 +6,7 @@ exports.toggleLikePost = async (req, res) => {
   const postId = parseInt(req.params.postId);
 
   try {
-     const post = await prisma.post.findUnique({
+    const post = await prisma.post.findUnique({
       where: { id: postId },
     });
 
@@ -32,7 +32,7 @@ exports.toggleLikePost = async (req, res) => {
           },
         },
       });
-      
+
       return res.status(200).json({ message: "Post unliked" });
     } else {
       const like = await prisma.like.create({
@@ -47,4 +47,3 @@ exports.toggleLikePost = async (req, res) => {
     res.status(500).json({ error: "Server error while toggling post" });
   }
 };
-
