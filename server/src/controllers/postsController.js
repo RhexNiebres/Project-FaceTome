@@ -50,27 +50,23 @@ exports.createPost = async (req, res) => {
         .status(400)
         .json({ error: "Title, content and user are required" });
     }
-
-    const existingPost = await prisma.post.findFirst({
+    const newPost = await prisma.post.upsert({
       where: {
         title,
       },
-    });
-
-    if (existingPost) {
-      return res.status(400).json({
-        error: `A post titled "${title}" already exists. Please use a different title.`,
-      });
-    }
-
-    const newPost = await prisma.post.create({
-      data: {
+      update: {},
+      create: {
         title,
         content,
         authorId,
       },
     });
 
+    if (newPost.authorId !== authorId || newPost.content !== content) {
+      return res.status(400).json({
+        error: `A post titled "${title}" already exists. Please use a different title.`,
+      });
+    }
     res.status(201).json(newPost);
   } catch (error) {
     console.error("Error creating post:", error);
@@ -91,8 +87,10 @@ exports.deletePost = async (req, res) => {
       return res.status(404).json({ error: "Post not found" });
     }
 
-    if(post.authorId !== userId && !isAdmin){
-      return res.status(403).json({error: "You are no authorized to delete this post"})
+    if (post.authorId !== userId && !isAdmin) {
+      return res
+        .status(403)
+        .json({ error: "You are no authorized to delete this post" });
     }
 
     await prisma.comment.deleteMany({
