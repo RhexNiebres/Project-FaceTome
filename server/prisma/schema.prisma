@@ -12,21 +12,21 @@ model User{
   id        Int      @id @default(autoincrement())
   email     String   @unique
   username  String   @unique
-  password  String
+  password  String?
   gender    Gender   @default (NON_SPECIFIED)
   profilePicture String? //optional
-
+  isAdmin        Boolean @default(false)
   posts     Post []
   comments  Comment[]
   likes     Like[]
 
-  sentFollows     UserFollow[] @relation("UserSentFollows")
-  receivedFollows UserFollow[] @relation("UserReceivedFollows")
+  followings     UserFollow[] @relation("Followings")
+  followers UserFollow[] @relation("Followers")
 }
 
 model Post{
   id        Int      @id @default(autoincrement())  
-  title     String  
+  title     String   @unique
   content   String  
 
   author    User     @relation(fields: [authorId], references: [id])  
@@ -62,10 +62,10 @@ model Like{
 model UserFollow {
   id          Int                  @id @default(autoincrement())
   status      FollowRequestStatus @default(PENDING)
-
-  follower    User @relation("UserSentFollows", fields: [followerId], references: [id])
+ 
+  follower    User @relation("Followers", fields: [followerId], references: [id])
   followerId  Int
-  following   User @relation("UserReceivedFollows", fields: [followingId], references: [id])
+  following   User @relation("Followings", fields: [followingId], references: [id])
   followingId Int
   
   createdAt   DateTime            @default(now())

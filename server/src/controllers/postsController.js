@@ -1,27 +1,33 @@
-const { PrismaClient } = require("@prisma/client");
+const { PrismaClient, Prisma } = require("../generated/prisma");
 const prisma = new PrismaClient();
 
 exports.getAllPosts = async (req, res) => {
   try {
     const currentUserId = req.user.id;
-    const follows = await prisma.userFollow.findMany({
-      where: {
-        OR: [
-          { followerId: currentUserId, status: "ACCEPTED" },
-          { followingId: currentUserId, status: "ACCEPTED" },
-        ],
-      },
-    });
-    const userIds = [currentUserId];
+    const includeFollowing = req.query.isFollowingPostsInclude === "true";
 
-    follows.forEach((f) => {
-      if (f.followerId !== currentUserId) userIds.push(f.followerId);
-      if (f.followingId !== currentUserId) userIds.push(f.followingId);
-    });
+    let authorIds = [currentUserId];
+
+    if (includeFollowing) {
+      const following = await prisma.userFollow.findMany({
+        where: {
+          followerId: currentUserId,
+          status: Prisma.FollowRequestStatus.ACCEPTED,
+        },
+        select: {
+          followingId: true,
+        },
+      });
+
+      const followingIds = following.map((f) => f.followingId);
+      authorIds = [...authorIds, ...followingIds];
+    }
 
     const posts = await prisma.post.findMany({
       where: {
-        authorId: { in: userIds },
+        authorId: {
+          in: authorIds,
+        },
       },
       include: {
         author: { select: { username: true } },
@@ -38,29 +44,6 @@ exports.getAllPosts = async (req, res) => {
   }
 };
 
-exports.getPostById = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const post = await prisma.post.findUnique({
-      where: { id: parseInt(id) },
-      include: {
-        author: { select: { username: true } },
-        comments: { include: { author: true } },
-        likes: true,
-      },
-    });
-
-    if (!post) {
-      return res.status(404).json({ error: "Post not Found" });
-    }
-    res.json(post);
-  } catch (error) {
-    console.error("Error fetching post:", error);
-    res.status(500).json({ error: "Server error while fetching post" });
-  }
-};
-
 exports.createPost = async (req, res) => {
   try {
     const { title, content } = req.body;
@@ -71,15 +54,23 @@ exports.createPost = async (req, res) => {
         .status(400)
         .json({ error: "Title, content and user are required" });
     }
-
-    const newPost = await prisma.post.create({
-      data: {
+    const newPost = await prisma.post.upsert({
+      where: {
+        title,
+      },
+      update: {},
+      create: {
         title,
         content,
         authorId,
       },
     });
 
+    if (newPost.authorId !== authorId || newPost.content !== content) {
+      return res.status(400).json({
+        error: `A post titled "${title}" already exists. Please use a different title.`,
+      });
+    }
     res.status(201).json(newPost);
   } catch (error) {
     console.error("Error creating post:", error);
@@ -90,20 +81,20 @@ exports.createPost = async (req, res) => {
 exports.deletePost = async (req, res) => {
   try {
     const postId = parseInt(req.params.id);
+    const { id: userId, isAdmin } = req.user;
 
-    const existingPost = await prisma.post.findUnique({
+    const post = await prisma.post.findUnique({
       where: { id: postId },
-      include: { comments: true },
     });
 
-    if (!existingPost) {
+    if (!post) {
       return res.status(404).json({ error: "Post not found" });
     }
 
-    if (existingPost.authorId !== req.user.id) {
+    if (post.authorId !== userId && !isAdmin) {
       return res
         .status(403)
-        .json({ error: "You are not authorized to delete this post" });
+        .json({ error: "You are no authorized to delete this post" });
     }
 
     await prisma.comment.deleteMany({

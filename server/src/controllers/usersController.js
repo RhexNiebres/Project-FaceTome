@@ -1,4 +1,4 @@
-const { PrismaClient } = require("../generated/prisma");
+const { PrismaClient, Prisma } = require("../generated/prisma");
 const prisma = new PrismaClient();
 const bcrypt = require("bcryptjs");
 
@@ -12,31 +12,66 @@ exports.getAllUsers = async (req, res) => {
   try {
     const users = await prisma.user.findMany({
       where: {
-        id: { not: currentUserId },
+        id: {
+          not: currentUserId,
+        },
       },
-      include: {
-        receivedFollows: {
-          where: { followerId: currentUserId },
-          select: { status: true },
+      select: {
+        id: true,
+        username: true,
+        profilePicture: true,
+        followers: {
+          where: {
+            followingId: currentUserId,
+          },
+          select: {
+            status: true,
+          },
+        },
+        following: {
+          where: {
+            followerId: currentUserId,
+          },
+          select: {
+            status: true,
+          },
         },
       },
     });
 
-    const formattedUsers = users.map(user => ({
-      id: user.id,
-      username: user.username,
-      email: user.email,
-      profilePicture: user.profilePicture, 
-      followStatus: user.receivedFollows.length ? user.receivedFollows[0].status : "",
-    }));
+    const response = users.map((user) => {
+      const follower = user.followers[0];
+      const following = user.following[0];
 
-    res.status(200).json(formattedUsers);
-  } catch (error) {
-    console.error("Error fetching users:", error);
-    res.status(500).json({ error: "Error fetching users" });
+      const canFollow =
+        !follower || follower.status === Prisma.FollowRequestStatus.PENDING;
+      const isPendingRequest =
+        follower?.status === Prisma.FollowRequestStatus.PENDING;
+      const isFollowing =
+        follower?.status === Prisma.FollowRequestStatus.ACCEPTED;
+      const isFollowingEachOther =
+        follower?.status === Prisma.FollowRequestStatus.ACCEPTED &&
+        following?.status === Prisma.FollowRequestStatus.ACCEPTED;
+      const hasCTA = following?.status === Prisma.FollowRequestStatus.PENDING;
+
+      return {
+        id: user.id,
+        username: user.username,
+        profilePicture: user.profilePicture,
+        isFollowing,
+        isPendingRequest,
+        isFollowingEachOther,
+        canFollow,
+        hasCTA,
+      };
+    });
+
+    return res.status(200).json(response);
+  } catch (err) {
+    console.error("Failed to fetch users:", err);
+    return res.status(500).json({ error: "Failed to fetch users." });
   }
 };
-
 
 exports.getUserById = async (req, res) => {
   const { id } = req.params;
@@ -59,8 +94,13 @@ exports.getUserById = async (req, res) => {
 exports.updateUser = async (req, res) => {
   const { id } = req.params;
   const { email, username, password, gender } = req.body;
-
+  const { id: userId, isAdmin } = req.user;
   try {
+    if (parseInt(id) !== userId && !isAdmin) {
+      return res
+        .status(403)
+        .json({ error: "You are not authorized to update this user" });
+    }
     const existingDifferentUser = await prisma.user.findFirst({
       where: {
         AND: [
@@ -128,4 +168,3 @@ exports.updateUser = async (req, res) => {
     res.status(500).json({ error: "Error updating user information" });
   }
 };
-
