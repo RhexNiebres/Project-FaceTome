@@ -10,7 +10,10 @@ const app = express();
 const indexRoutes = require("./routes/indexRoute");
 const authRoutes = require("./routes/authRoute");
 const usersRoutes = require("./routes/usersRoute");
-
+const followRoutes = require("./routes/followRoute")
+const postRoutes = require("./routes/postRoute")
+const commentRoutes = require("./routes/commentsRoute")
+const likeRoutes = require("./routes/likeRoute")
 const cors = require("cors");
 
 const allowedOrigins = [process.env.CLIENT_HOST,process.env.FACETOME_CLIENT_HOST];
@@ -31,7 +34,10 @@ app.use(passport.initialize());
 app.use("/", indexRoutes);
 app.use("/", authRoutes);
 app.use("/users", usersRoutes);
-
+app.use("/follow", followRoutes);  
+app.use("/posts", postRoutes);     
+app.use("/comments", commentRoutes); 
+app.use("/likes", likeRoutes);      
 
 app.listen(process.env.APP_PORT, () =>
   console.log(`App listening on port ${process.env.APP_PORT}!`)
