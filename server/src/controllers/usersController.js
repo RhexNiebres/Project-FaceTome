@@ -15,7 +15,7 @@ exports.getAllUsers = async (req, res) => {
         id: {
           not: currentUserId,
         },
-      }, 
+      },
       select: {
         id: true,
         username: true,
@@ -40,13 +40,18 @@ exports.getAllUsers = async (req, res) => {
     });
 
     const response = users.map((user) => {
-      const follower = user.followers[0]; 
-      const following = user.following[0]; 
+      const follower = user.followers[0];
+      const following = user.following[0];
 
-      const canFollow = !follower || follower.status === Prisma.FollowRequestStatus.PENDING;
-      const isPendingRequest = follower?.status === Prisma.FollowRequestStatus.PENDING;
-      const isFollowing = follower?.status === Prisma.FollowRequestStatus.ACCEPTED;
-      const isFollowingEachOther = follower?.status === Prisma.FollowRequestStatus.ACCEPTED&& following?.status === Prisma.FollowRequestStatus.ACCEPTED;
+      const canFollow =
+        !follower || follower.status === Prisma.FollowRequestStatus.PENDING;
+      const isPendingRequest =
+        follower?.status === Prisma.FollowRequestStatus.PENDING;
+      const isFollowing =
+        follower?.status === Prisma.FollowRequestStatus.ACCEPTED;
+      const isFollowingEachOther =
+        follower?.status === Prisma.FollowRequestStatus.ACCEPTED &&
+        following?.status === Prisma.FollowRequestStatus.ACCEPTED;
       const hasCTA = following?.status === Prisma.FollowRequestStatus.PENDING;
 
       return {
