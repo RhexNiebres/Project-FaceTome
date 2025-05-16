@@ -69,3 +69,27 @@ export const createPost = async ({ title, content }) => {
     return { success: false, error: error.message };
   }
 };
+
+export const deletePost = async (postId) => {
+  try {
+    const response = await fetch(
+      import.meta.env.VITE_HOST + `/posts/${postId}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData?.error || "Failed to delete post");
+    }
+    const data = response.json();
+    return { success: true, message: data.message };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+};
