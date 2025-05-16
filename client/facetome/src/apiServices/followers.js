@@ -47,3 +47,26 @@ export const getFollowing = async (userId) => {
     return { success: false, error: error.message };
   }
 };
+
+export const sendFollowRequest = async (followingId) => {
+  try {
+    const response = await fetch(import.meta.env.VITE_HOST + `/follow`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({ followingId }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData?.error || "Failed to send follow request");
+    }
+
+    const data = await response.json();
+    return { success: true, followRequest: data };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+};
