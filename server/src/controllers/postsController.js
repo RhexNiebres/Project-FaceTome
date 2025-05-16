@@ -6,27 +6,25 @@ exports.getAllPosts = async (req, res) => {
     const currentUserId = req.user.id;
     const includeFollowing = req.query.isFollowingPostsInclude === "true";
 
-    let authorIds = [currentUserId];
-
-    if (includeFollowing) {
-      const following = await prisma.userFollow.findMany({
-        where: {
-          followerId: currentUserId,
-          status: Prisma.FollowRequestStatus.ACCEPTED,
-        },
-        select: {
-          followingId: true,
-        },
-      });
-
-      const followingIds = following.map((f) => f.followingId);
-      authorIds = [...authorIds, ...followingIds];
-    }
-
     const posts = await prisma.post.findMany({
       where: {
         authorId: {
-          in: authorIds,
+          in: includeFollowing
+            ? [
+                currentUserId,
+                ...(await prisma.userFollow
+                  .findMany({
+                    where: {
+                      followerId: currentUserId,
+                      status: Prisma.FollowRequestStatus.ACCEPTED,
+                    },
+                    select: {
+                      followingId: true,
+                    },
+                  })
+                  .then((following) => following.map((f) => f.followingId))),
+              ]
+            : [currentUserId],
         },
       },
       include: {
@@ -34,7 +32,9 @@ exports.getAllPosts = async (req, res) => {
         comments: { include: { author: true } },
         likes: true,
       },
-      orderBy: { createdAt: "desc" },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
 
     res.json(posts);
@@ -43,6 +43,7 @@ exports.getAllPosts = async (req, res) => {
     res.status(500).json({ error: "Server error while fetching posts" });
   }
 };
+
 
 exports.createPost = async (req, res) => {
   try {
