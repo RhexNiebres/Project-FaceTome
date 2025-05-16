@@ -95,3 +95,28 @@ export const acceptFollowRequest = async (id) => {
     return { success: false, error: error.message };
   }
 };
+
+export const rejectFollowRequest = async (id) => {
+  try {
+    const response = await fetch(
+      import.meta.env.VITE_HOST + `/follow/${id}/reject`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData?.error || "Failed to reject follow request");
+    }
+
+    const data = await response.json();
+    return { success: true, rejectedRequest: data };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
+};
