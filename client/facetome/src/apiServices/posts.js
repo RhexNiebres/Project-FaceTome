@@ -1,3 +1,5 @@
+import { post } from "../../../../server/src/routes/likeRoute";
+
 export const getAllPostsForCurrentUser = async () => {
   try {
     const response = await fetch(
@@ -10,8 +12,9 @@ export const getAllPostsForCurrentUser = async () => {
         },
       }
     );
+
     if (!response.ok) {
-      const errorData = await response.json;
+      const errorData = await response.json();
       throw new Error(errorData?.error || "failed fetching user's posts");
     }
 
@@ -34,11 +37,37 @@ export const getAllPosts = async () => {
         },
       }
     );
-    if(!response.ok){
-        const errorData = await response.json;
-        throw new Error(errorData?.error || "Failed to fetch posts")
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData?.error || "Failed to fetch posts");
     }
+    const data = await response.json();
+    return { success: true, posts: data };
   } catch (error) {
+    return { success: false, error: error.message };
+  }
+};
+
+export const createPost = async ({ title, content }) => {
+  try {
+    const response = await fetch(import.meta.env.VITE_HOST + `/posts`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({ title, content }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData?.error || "Failed to create post");
+    }
+
+    const data = await response.json();
+    return { success: true, post: data };
+  } catch {
     return { success: false, error: error.message };
   }
 };
