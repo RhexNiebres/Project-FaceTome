@@ -65,7 +65,7 @@ export const createPost = async ({ title, content }) => {
 
     const data = await response.json();
     return { success: true, post: data };
-  } catch {
+  } catch(error){
     return { success: false, error: error.message };
   }
 };
@@ -87,7 +87,7 @@ export const deletePost = async (postId) => {
       const errorData = await response.json();
       throw new Error(errorData?.error || "Failed to delete post");
     }
-    const data = response.json();
+    const data = await response.json();
     return { success: true, message: data.message };
   } catch (error) {
     return { success: false, error: error.message };
