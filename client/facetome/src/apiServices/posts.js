@@ -1,5 +1,3 @@
-import { post } from "../../../../server/src/routes/likeRoute";
-
 export const getAllPostsForCurrentUser = async () => {
   try {
     const response = await fetch(
