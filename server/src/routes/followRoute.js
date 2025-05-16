@@ -8,17 +8,17 @@ router.get("/:userId/following", followController.getFollowing);
 
 router.post("/follow", verifyToken, followController.sendFollowRequest);
 router.put(
-  "/follow/:id/accept",
+  "/:id/accept",
   verifyToken,
   followController.acceptFollowRequest
 );
 router.put(
-  "/follow/:id/reject",
+  "/:id/reject",
   verifyToken,
   followController.rejectFollowRequest
 );
 router.delete(
-  "/follow/:followingId",
+  "/:followingId",
   verifyToken,
   followController.cancelFollow
 );
