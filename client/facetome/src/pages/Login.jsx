@@ -105,6 +105,12 @@ const Login = () => {
               Create new account?
             </button>
           </div>
+          <a
+            href="http://localhost:8080/auth/google"
+            className="mt-4 flex items-center justify-center w-full bg-gray-600 hover:bg-gray-500 text-white font-semibold py-2 rounded-md transition duration-200"
+          >
+            Sign in with Google
+          </a>
         </form>
       </div>
     </div>
