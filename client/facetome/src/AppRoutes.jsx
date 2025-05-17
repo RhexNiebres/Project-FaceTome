@@ -9,7 +9,7 @@ import "../src/styles/App.css";
 import App from "./App";
 import LandingPage from "./pages/LandingPage";
 import NotFoundPage from "./pages/NotFound";
-
+import GoogleAuth from "./services/GoogleAuth";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -18,6 +18,8 @@ const AppRoutes = () => {
 
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
+        <Route path="/oauth-success" element={<GoogleAuth />} />
+
       <Route element={<ProtectedRoute />}>
         <Route path="/home" element={<Home />} />
         <Route path="/profile" element={<UserProfile />} />
