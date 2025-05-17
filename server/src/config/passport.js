@@ -16,7 +16,7 @@ passport.use(
       try {
         const email = profile.email || profile.emails?.[0]?.value;
         const username = profile.displayName
-        const avatar   = profile.photos?.[0]?.value;  
+        const avatar   = profile.picture
 
         if (!email) return done(null, false);
         const user = await prisma.user.findUnique({ where: { email } });
