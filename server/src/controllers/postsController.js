@@ -1,4 +1,4 @@
-const { PrismaClient, Prisma } = require("../generated/prisma");
+const { PrismaClient, FollowRequestStatus } = require("../generated/prisma");
 const prisma = new PrismaClient();
 
 exports.getAllPosts = async (req, res) => {
@@ -16,7 +16,7 @@ exports.getAllPosts = async (req, res) => {
                   .findMany({
                     where: {
                       followerId: currentUserId,
-                      status: Prisma.FollowRequestStatus.ACCEPTED,
+                      status: FollowRequestStatus.ACCEPTED,
                     },
                     select: {
                       followingId: true,

@@ -9,7 +9,7 @@ passport.use(
   new GoogleStrategy(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,//make another instance for production
       callbackURL: `http://localhost:${process.env.APP_PORT}/auth/google/callback`,
     },
     async (accessToken, refreshToken, profile, done) => {
@@ -30,7 +30,7 @@ passport.use(
               profilePicture: avatar,    
             },
           }); 
-        }
+        }//else update the avatar
         const token = generateToken(user);
         return done(null, { ...user, token });
       } catch (err) {

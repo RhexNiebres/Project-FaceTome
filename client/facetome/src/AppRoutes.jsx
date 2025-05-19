@@ -3,13 +3,13 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Home from "./pages/Home";
-import UserProfile from "./pages/UserProfile";
 import ProtectedRoute from "./services/ProtectedRoute";
 import "../src/styles/App.css";
 import App from "./App";
 import LandingPage from "./pages/LandingPage";
 import NotFoundPage from "./pages/NotFound";
 import GoogleAuth from "./services/GoogleAuth";
+import UserProfilePage from "./pages/UserProfilePage";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -18,11 +18,11 @@ const AppRoutes = () => {
 
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
-        <Route path="/oauth-success" element={<GoogleAuth />} />
+    <Route path="/oauth-success" element={<GoogleAuth />} />
 
       <Route element={<ProtectedRoute />}>
         <Route path="/home" element={<Home />} />
-        <Route path="/profile" element={<UserProfile />} />
+        <Route path="/profile" element={<UserProfilePage />} />
       </Route>
 
       <Route path="*" element={<NotFoundPage />} />

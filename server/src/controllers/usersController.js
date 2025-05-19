@@ -1,4 +1,4 @@
-const { PrismaClient, Prisma } = require("../generated/prisma");
+const { PrismaClient, FollowRequestStatus } = require("../generated/prisma");
 const prisma = new PrismaClient();
 const bcrypt = require("bcryptjs");
 
@@ -44,15 +44,15 @@ exports.getAllUsers = async (req, res) => {
       const following = user.following[0];
 
       const canFollow =
-        !follower || follower.status === Prisma.FollowRequestStatus.PENDING;
+        !follower || follower.status === FollowRequestStatus.PENDING;
       const isPendingRequest =
-        follower?.status === Prisma.FollowRequestStatus.PENDING;
+        follower?.status === FollowRequestStatus.PENDING;
       const isFollowing =
-        follower?.status === Prisma.FollowRequestStatus.ACCEPTED;
+        follower?.status === FollowRequestStatus.ACCEPTED;
       const isFollowingEachOther =
-        follower?.status === Prisma.FollowRequestStatus.ACCEPTED &&
-        following?.status === Prisma.FollowRequestStatus.ACCEPTED;
-      const hasCTA = following?.status === Prisma.FollowRequestStatus.PENDING;
+        follower?.status === FollowRequestStatus.ACCEPTED &&
+        following?.status === FollowRequestStatus.ACCEPTED;
+      const hasCTA = following?.status === FollowRequestStatus.PENDING;
 
       return {
         id: user.id,

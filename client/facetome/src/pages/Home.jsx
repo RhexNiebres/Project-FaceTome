@@ -1,10 +1,13 @@
+import AllPost from "../components/AllPost";
+import CreatePost from "../components/CreatePost";
 import NavBar from "../components/NavBar"
 
 const Home = () => {
     return(
         <>
         <NavBar/>
-        <h1>hello</h1>
+        <CreatePost/>
+        <AllPost/>
         </>
     );
 }
