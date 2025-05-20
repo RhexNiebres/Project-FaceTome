@@ -4,11 +4,14 @@ import NavBar from "../components/NavBar"
 
 const Home = () => {
     return(
-        <>
+        <div className="flex flex-col">
         <NavBar/>
+        <div className="flex justify-center">
         <CreatePost/>
+        </div>
+        
         <AllPost/>
-        </>
+        </div>
     );
 }
 
