@@ -1,4 +1,4 @@
-const { PrismaClient, Prisma } = require("../generated/prisma");
+const { PrismaClient, FollowRequestStatus} = require("../generated/prisma");
 const prisma = new PrismaClient();
 
 exports.getFollowers = async (req, res) => {
@@ -10,8 +10,8 @@ exports.getFollowers = async (req, res) => {
         followingId: parseInt(userId),
         status: {
           in: [
-            Prisma.FollowRequestStatus.PENDING,
-            Prisma.FollowRequestStatus.ACCEPTED,
+           FollowRequestStatus.PENDING,
+            FollowRequestStatus.ACCEPTED,
           ], // to filter only the desired statuses.
         },
       },
@@ -35,8 +35,8 @@ exports.getFollowing = async (req, res) => {
         followerId: parseInt(userId),
         status: {
           in: [
-            Prisma.FollowRequestStatus.PENDING,
-            Prisma.FollowRequestStatus.ACCEPTED,
+           FollowRequestStatus.PENDING,
+           FollowRequestStatus.ACCEPTED,
           ],
         },
       },
@@ -71,11 +71,11 @@ exports.sendFollowRequest = async (req, res) => {
       create: {
         followerId,
         followingId,
-        status: Prisma.FollowRequestStatus.PENDING,
+        status: FollowRequestStatus.PENDING,
       },
     });
 
-    if (followRequest.status !== Prisma.FollowRequestStatus.PENDING) {
+    if (followRequest.status !== FollowRequestStatus.PENDING) {
       return res.status(400).json({ error: "Follow request already exists." });
     }
     res.status(201).json(followRequest);
@@ -91,7 +91,7 @@ exports.acceptFollowRequest = async (req, res) => {
   try {
     const followRequest = await prisma.userFollow.update({
       where: { id: parseInt(id) },
-      data: { status: Prisma.FollowRequestStatus.ACCEPTED },
+      data: { status: FollowRequestStatus.ACCEPTED },
     });
 
     res.json(followRequest);
@@ -107,7 +107,7 @@ exports.rejectFollowRequest = async (req, res) => {
   try {
     const followRequest = await prisma.userFollow.update({
       where: { id: parseInt(id) },
-      data: { status: Prisma.FollowRequestStatus.REJECTED },
+      data: { status: FollowRequestStatus.REJECTED },
     });
 
     res.json(followRequest);
