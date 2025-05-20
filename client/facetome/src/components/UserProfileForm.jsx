@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
-import NavBar from "../components/NavBar";
 import { getUserById } from "../apiServices/users";
 import { updateUser } from "../apiServices/users";
 
-const UserProfile = () => {
+const UserProfileForm = () => {
   const [userData, setUserData] = useState(null);
   const [error, setError] = useState(null);
   const [newUsername, setNewUsername] = useState("");
@@ -113,7 +112,7 @@ const UserProfile = () => {
 
   return (
     <div>
-      <NavBar />
+
       {error && <p className="text-red-500">{error}</p>}
       {editError && <p className="text-red-500">{editError}</p>}
       {passwordUpdated && (
@@ -227,4 +226,4 @@ const UserProfile = () => {
   );
 };
 
-export default UserProfile;
+export default UserProfileForm;
