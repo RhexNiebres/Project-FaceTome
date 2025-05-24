@@ -172,8 +172,17 @@ const Signup = () => {
               Already have an account?
             </button>
           </div>
+          <a
+            href="http://localhost:8080/auth/google"
+           className="mt-4 flex items-center justify-center w-full bg-white border hover:bg-gray-200 text-gray font-semibold py-2 rounded-md transition duration-200"
+          >
+              <img className="w-7 h-7 mr-7" src="/google.png" alt="Google Logo" />
+            Sign up with Google
+          </a>
         </form>
+        
       </div>
+      
     </div>
   );
 };
