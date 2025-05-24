@@ -102,15 +102,17 @@ const Login = () => {
               onClick={() => navigate("/signup")}
               className="bg-green-500 rounded-md p-2 font-semibold text-white mt-5 "
             >
-              Create new account?
+              Create new account
             </button>
           </div>
+          
           <a
             href="http://localhost:8080/auth/google"
-            className="mt-4 flex items-center justify-center w-full bg-gray-600 hover:bg-gray-500 text-white font-semibold py-2 rounded-md transition duration-200"
+           className="mt-4 flex items-center justify-center w-full bg-white border hover:bg-gray-200 text-gray font-semibold py-2 rounded-md transition duration-200"
           >
-            Sign in with Google
-          </a>{/* add google icon*/}
+              <img className="w-7 h-7 mr-7" src="/google.png" alt="Google Logo" />
+            Sign up with Google
+          </a>
         </form>
       </div>
     </div>
