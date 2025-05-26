@@ -28,7 +28,7 @@ exports.getAllUsers = async (req, res) => {
             status: true,
           },
         },
-        following: {
+        followings: {
           where: {
             followerId: currentUserId,
           },
@@ -41,7 +41,7 @@ exports.getAllUsers = async (req, res) => {
 
     const response = users.map((user) => {
       const follower = user.followers[0];
-      const following = user.following[0];
+      const following = user.followings[0];
 
       const canFollow =
         !follower || follower.status === FollowRequestStatus.PENDING;
