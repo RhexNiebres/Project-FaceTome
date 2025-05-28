@@ -2,6 +2,7 @@ import { useState } from "react";
 import { createPost } from "../apiServices/posts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
+
 const CreatePost = ({ onPostCreated }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -18,7 +19,7 @@ const CreatePost = ({ onPostCreated }) => {
     if (result.success) {
       setTitle("");
       setContent("");
-      setShowForm(false)
+      setShowForm(false);
       if (onPostCreated) onPostCreated(result.post);
     } else {
       alert(result.error || "Failed to create post");
@@ -44,37 +45,37 @@ const CreatePost = ({ onPostCreated }) => {
         />
         {showForm && (
           <>
-          <label htmlFor="content" className="text-l font-bold">
-          Content
-        </label>
-        <textarea
-          id="content"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          rows="1"
-          required
-          className="p-2 m-2 rounded-xl w-full text-gray-500 bg-1"
-        />
-        <div className="flex justify-end">
-          <button
-            type="submit"
-            disabled={loading}
-            className="p-2 m-2 bg-1 text-slate-200 hover:bg-2 rounded-xl "
-          >
-            {loading ? (
-              <div className="flex justify-center w-20">
-                <FontAwesomeIcon
-                  icon={faCircleNotch}
-                  spin
-                  className="text-blue-500 text-2xl"
-                />
-              </div>
-            ) : (
-              "Create Post"
-            )}
-          </button>
-        </div>
-        </>
+            <label htmlFor="content" className="text-l font-bold">
+              Content
+            </label>
+            <textarea
+              id="content"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              rows="1"
+              required
+              className="p-2 m-2 rounded-xl w-full text-gray-500 bg-1"
+            />
+            <div className="flex justify-end">
+              <button
+                type="submit"
+                disabled={loading}
+                className="p-2 m-2 bg-1 text-slate-200 hover:bg-2 rounded-xl "
+              >
+                {loading ? (
+                  <div className="flex justify-center w-20">
+                    <FontAwesomeIcon
+                      icon={faCircleNotch}
+                      spin
+                      className="text-blue-500 text-2xl"
+                    />
+                  </div>
+                ) : (
+                  "Create Post"
+                )}
+              </button>
+            </div>
+          </>
         )}
       </form>
     </div>
