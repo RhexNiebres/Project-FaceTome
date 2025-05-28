@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
-import { getUserById } from "../apiServices/users";
+import { useState } from "react";
 import { updateUser } from "../apiServices/users";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 
-const UserProfileForm = () => {
-  const [userData, setUserData] = useState(null);
+const UserProfileForm = ({ user, setUser, getAvatar }) => {
   const [error, setError] = useState(null);
   const [newUsername, setNewUsername] = useState("");
   const [newEmail, setNewEmail] = useState("");
@@ -13,37 +13,6 @@ const UserProfileForm = () => {
   const [editError, setEditError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [passwordUpdated, setPasswordUpdated] = useState(false);
-
-  const userId = localStorage.getItem("userId");
-
-  useEffect(() => {
-    if (!userId) {
-      setError("User not found in localStorage.");
-      return;
-    }
-
-    getUserById(userId).then((result) => {
-      if (result.success) {
-        setUserData(result.user);
-        setNewUsername(result.user.username);
-        setNewEmail(result.user.email);
-        setNewGender(result.user.gender || "");
-      } else {
-        setError(result.error);
-      }
-    });
-  }, [userId]);
-
-  const getAvatar = (gender) => {
-    switch (gender?.toLowerCase()) {
-      case "male":
-        return "./male.jpg";
-      case "female":
-        return "./female.jpg";
-      default:
-        return "./non_specified.jpg";
-    }
-  };
 
   const handleSaveEdit = async () => {
     const usernameRegex = /^.{7,}$/;
@@ -83,7 +52,7 @@ const UserProfileForm = () => {
       const updateResult = await updateUser(userId, updatedData);
 
       if (updateResult.success) {
-        setUserData(updateResult.user);
+        setUser(updateResult.user);
         setEditError(null);
 
         if (newPassword) {
@@ -104,15 +73,14 @@ const UserProfileForm = () => {
   };
 
   const isSaveDisabled =
-    newUsername === userData?.username &&
-    newEmail === userData?.email &&
+    newUsername === user?.username &&
+    newEmail === user?.email &&
     newPassword === "" &&
     confirmPassword === "" &&
-    newGender === userData?.gender;
+    newGender === user?.gender;
 
   return (
     <div>
-
       {error && <p className="text-red-500">{error}</p>}
       {editError && <p className="text-red-500">{editError}</p>}
       {passwordUpdated && (
@@ -120,21 +88,21 @@ const UserProfileForm = () => {
           Password updated successfully!
         </p>
       )}
-      {userData ? (
-        <div className="flex flex-col text-white items-center justify-left mt-20 bg-blue-500 rounded-2xl p-10 mx-auto max-w-lg w-full shadow-2xl">
+      {user ? (
+        <div className="flex flex-col text-white items-center justify-left mt-20 bg-1 rounded-2xl p-10 mx-auto max-w-lg w-full shadow-2xl">
           <img
-            src={getAvatar(userData.gender)}
+            src={user.profilePicture || getAvatar(user.gender)}
             alt="User Avatar"
             className="w-32 h-32 rounded-full shadow-md mb-4 "
           />
-          <div className="text-blue-500 flex flex-col items-center gap-2 bg-gray-100 p-4 rounded-2xl w-full">
+          <form className="flex flex-col items-center gap-2 bg-2 p-4 rounded-2xl w-full">
             <h1 className="text-gray-100 text-2xl font-bold p-2 bg-blue-500 rounded-xl">
-              {userData.username}'s details
+              {user.username}'s details
             </h1>
-            <div className="flex flex-col gap-3 w-full text-gray-400">
+            <div className="flex flex-col gap-3 w-full text-2">
               <label
                 htmlFor="newUsername"
-                className="block font-semibold text-gray-700"
+                className="block font-semibold text-gray-200"
               >
                 Username
               </label>
@@ -148,7 +116,7 @@ const UserProfileForm = () => {
               />
               <label
                 htmlFor="email"
-                className="block font-semibold text-gray-700"
+                className="block font-semibold text-gray-200"
               >
                 Email
               </label>
@@ -162,10 +130,11 @@ const UserProfileForm = () => {
               />
               <label
                 htmlFor="newPassword"
-                className="block font-semibold text-gray-700"
+                className="block font-semibold text-gray-200"
               >
                 Password
               </label>
+              {/* add conditional rendering for users who login using gmail account*/}
               <input
                 type="newPassword"
                 value={newPassword}
@@ -175,7 +144,7 @@ const UserProfileForm = () => {
               />
               <label
                 htmlFor="confirmNewPassword"
-                className="block font-semibold text-gray-700"
+                className="block font-semibold text-gray-200"
               >
                 Confirm Password
               </label>
@@ -189,7 +158,7 @@ const UserProfileForm = () => {
               />
               <label
                 htmlFor="newGender"
-                className="block font-semibold text-gray-700"
+                className="block font-semibold text-gray-00"
               >
                 Gender
               </label>
@@ -217,10 +186,16 @@ const UserProfileForm = () => {
                 {loading ? "Saving..." : "Save Changes"}
               </button>
             </div>
-          </div>
+          </form>
         </div>
       ) : (
-        <p className="text-center mt-8">Loading user data...</p>
+        <div className="flex justify-center items-center p-10">
+          <FontAwesomeIcon
+            icon={faCircleNotch}
+            spin
+            className="text-blue-500 text-3xl"
+          />
+        </div>
       )}
     </div>
   );
