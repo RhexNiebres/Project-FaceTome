@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createComment } from "../apiServices/comments";
 
-const AddComment = ({postId, onCommentAdded}) => {
+const AddComment = ({ postId, onCommentAdded }) => {
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
 
