@@ -26,6 +26,55 @@ const Home = () => {
     }
   };
 
+  const handlePostDeleted = (deletedPostId) => {
+    setPosts((prev) => prev.filter((post) => post.id !== deletedPostId));
+  };
+
+  const handleLikeToggle = (postId, newLiked) => {
+    const userId = parseInt(localStorage.getItem("userId"));
+
+    setPosts((prevPosts) =>
+      prevPosts.map((post) => {
+        if (post.id === postId) {
+          let updatedLikes;
+          if (newLiked) {
+            updatedLikes = [...post.likes, { userId }];
+          } else {
+            updatedLikes = post.likes.filter((like) => like.userId !== userId);
+          }
+          return { ...post, likes: updatedLikes };
+        }
+        return post;
+      })
+    );
+  };
+  const handleCommentAdded = (postId, newComment) => {
+    setPosts((prevPosts) =>
+      prevPosts.map((post) => {
+        if (post.id === postId) {
+          return {
+            ...post,
+            comments: [...post.comments, newComment],
+          };
+        }
+        return post;
+      })
+    );
+  };
+const handleCommentDeleted = (postId, commentId) => {
+  setPosts((prevPosts) =>
+    prevPosts.map((post) => {
+      if (post.id === postId) {
+        return {
+          ...post,
+          comments: post.comments.filter((comment) => comment.id !== commentId),
+        };
+      }
+      return post;
+    })
+  );
+};
+
   return (
     <div className="flex flex-col bg-4 justify-center">
       <NavBar />
@@ -33,9 +82,15 @@ const Home = () => {
         <CreatePost onPostCreated={handlePostCreated} />
       </div>
       <div className="flex justify-center">
-        <AllPost posts={posts} loading={loading} />
+        <AllPost
+          posts={posts}
+          loading={loading}
+          onDelete={handlePostDeleted}
+          onLikeToggle={handleLikeToggle}
+          onCommentAdded={handleCommentAdded}
+          onCommentDeleted={handleCommentDeleted}
+        />
       </div>
-      
     </div>
   );
 };
