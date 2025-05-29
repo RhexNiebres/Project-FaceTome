@@ -13,6 +13,7 @@ const UserProfileForm = ({ user, setUser, getAvatar }) => {
   const [editError, setEditError] = useState(null);
   const [loading, setLoading] = useState(false);
   const [passwordUpdated, setPasswordUpdated] = useState(false);
+  const isPasswordEditable = !!user?.password;
 
   const handleSaveEdit = async () => {
     const usernameRegex = /^.{7,}$/;
@@ -96,7 +97,7 @@ const UserProfileForm = ({ user, setUser, getAvatar }) => {
             className="w-32 h-32 rounded-full shadow-md mb-4 "
           />
           <form className="flex flex-col items-center gap-2 bg-2 p-4 rounded-2xl w-full">
-            <h1 className="text-gray-100 text-2xl font-bold p-2 bg-blue-500 rounded-xl">
+            <h1 className="text-gray-100 text-2xl font-bold p-2 border-b">
               {user.username}'s details
             </h1>
             <div className="flex flex-col gap-3 w-full text-2">
@@ -114,48 +115,54 @@ const UserProfileForm = ({ user, setUser, getAvatar }) => {
                 className="px-4 py-2 rounded-md border border-gray-300"
                 placeholder="New Username"
               />
-              <label
-                htmlFor="email"
-                className="block font-semibold text-gray-200"
-              >
-                Email
-              </label>
-              <input
-                id="email"
-                type="email"
-                value={newEmail}
-                onChange={(e) => setNewEmail(e.target.value)}
-                className="px-4 py-2 rounded-md border border-gray-300"
-                placeholder="New Email"
-              />
-              <label
-                htmlFor="newPassword"
-                className="block font-semibold text-gray-200"
-              >
-                Password
-              </label>
-              {/* add conditional rendering for users who login using gmail account*/}
-              <input
-                type="newPassword"
-                value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
-                className="px-4 py-2 rounded-md border border-gray-300"
-                placeholder="New Password"
-              />
-              <label
-                htmlFor="confirmNewPassword"
-                className="block font-semibold text-gray-200"
-              >
-                Confirm Password
-              </label>
-              <input
-                id="confirmNewPassword"
-                type="password"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                className="px-4 py-2 rounded-md border border-gray-300"
-                placeholder="Confirm New Password"
-              />
+
+              {isPasswordEditable && (
+                <>
+                  <label
+                    htmlFor="email"
+                    className="block font-semibold text-gray-200"
+                  >
+                    Email
+                  </label>
+                  <input
+                    id="email"
+                    type="email"
+                    value={newEmail}
+                    onChange={(e) => setNewEmail(e.target.value)}
+                    className="px-4 py-2 rounded-md border border-gray-300"
+                    placeholder="New Email"
+                  />
+                  <label
+                    htmlFor="newPassword"
+                    className="block font-semibold text-gray-200"
+                  >
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    className="px-4 py-2 rounded-md border border-gray-300"
+                    placeholder="New Password"
+                  />
+
+                  <label
+                    htmlFor="confirmNewPassword"
+                    className="block font-semibold text-gray-200"
+                  >
+                    Confirm Password
+                  </label>
+                  <input
+                    id="confirmNewPassword"
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    className="px-4 py-2 rounded-md border border-gray-300"
+                    placeholder="Confirm New Password"
+                  />
+                </>
+              )}
+
               <label
                 htmlFor="newGender"
                 className="block font-semibold text-gray-00"
