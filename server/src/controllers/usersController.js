@@ -25,6 +25,7 @@ exports.getAllUsers = async (req, res) => {
             followingId: currentUserId,
           },
           select: {
+            id: true,
             status: true,
           },
         },
@@ -33,6 +34,7 @@ exports.getAllUsers = async (req, res) => {
             followerId: currentUserId,
           },
           select: {
+            id: true,
             status: true,
           },
         },
@@ -45,10 +47,8 @@ exports.getAllUsers = async (req, res) => {
 
       const canFollow =
         !follower || follower.status === FollowRequestStatus.PENDING;
-      const isPendingRequest =
-        follower?.status === FollowRequestStatus.PENDING;
-      const isFollowing =
-        follower?.status === FollowRequestStatus.ACCEPTED;
+      const isPendingRequest = follower?.status === FollowRequestStatus.PENDING;
+      const isFollowing = follower?.status === FollowRequestStatus.ACCEPTED;
       const isFollowingEachOther =
         follower?.status === FollowRequestStatus.ACCEPTED &&
         following?.status === FollowRequestStatus.ACCEPTED;
@@ -63,6 +63,7 @@ exports.getAllUsers = async (req, res) => {
         isFollowingEachOther,
         canFollow,
         hasCTA,
+        followRequestId: follower?.id || null,
       };
     });
 
