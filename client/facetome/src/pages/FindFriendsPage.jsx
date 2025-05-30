@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { getAllUsers } from "../apiServices/users";
 import NavBar from "../components/NavBar";
+import FollowButton from "../components/FollowButton";
+import FollowRequestResponse from "../components/FollowRequestResponse"; // Adjust path as needed
 
 const FindFriendsPage = () => {
   const [users, setUsers] = useState([]);
@@ -53,9 +55,19 @@ const FindFriendsPage = () => {
                   className="p-4 bg-1 w-96 rounded font-medium mb-3"
                   key={user.id}
                 >
-                  <div className="text-white flex flex-col ">
+                  <div className="text-white flex flex-col gap-2">
                     <span className="text-sm text-gray-300">{status}</span>
                     <span>{user.username}</span>
+                    {user.isFollowingEachOther ? null : user.isPendingRequest ? (
+                      <FollowRequestResponse requestId={user.followRequestId} />
+                    ) : (
+                      <FollowButton
+                        followingId={user.id}
+                        initiallyFollowed={user.isFollowing}
+                        isPendingRequest={user.isPendingRequest}
+                        hasCTA={user.hasCTA}
+                      />
+                    )}
                   </div>
                 </li>
               );
