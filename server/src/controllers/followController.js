@@ -60,6 +60,20 @@ exports.sendFollowRequest = async (req, res) => {
   }
 
   try {
+    const existingAcceptedFollow = await prisma.userFollow.findFirst({
+      where: {
+        status: FollowRequestStatus.ACCEPTED,
+        OR: [
+          { followerId, followingId },
+          { followerId: followingId, followingId: followerId },
+        ],
+      },
+    });
+
+    if (existingAcceptedFollow) {
+      return res.status(400).json({ error: "Follow relationship already exists." });
+    }
+
     const followRequest = await prisma.userFollow.upsert({
       where: {
         followerId_followingId: {
@@ -85,6 +99,7 @@ exports.sendFollowRequest = async (req, res) => {
   }
 };
 
+
 exports.acceptFollowRequest = async (req, res) => {
   const { id } = req.params;
 
@@ -94,12 +109,32 @@ exports.acceptFollowRequest = async (req, res) => {
       data: { status: FollowRequestStatus.ACCEPTED },
     });
 
+    const backFollow= await prisma.userFollow.findUnique({
+      where: {
+        followerId_followingId: {
+          followerId: followRequest.followingId,
+          followingId: followRequest.followerId,
+        },
+      },
+    });
+
+    if (!backFollow) {
+      await prisma.userFollow.create({
+        data: {
+          followerId: followRequest.followingId,
+          followingId: followRequest.followerId,
+          status: FollowRequestStatus.ACCEPTED,
+        },
+      });
+    }
+
     res.json(followRequest);
   } catch (err) {
     console.error(err);
     res.status(404).json({ error: "Follow request was not accepted." });
   }
 };
+
 
 exports.rejectFollowRequest = async (req, res) => {
   const { id } = req.params;
