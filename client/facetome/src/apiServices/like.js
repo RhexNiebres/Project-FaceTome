@@ -15,7 +15,7 @@ export const toggleLikePost = async (postId) => {
       const errorData = await response.json();
       throw new Error(errorData || "Failed to toggle like");
     }
-    const data = await response.json;
+    const data = await response.json();
     return { success: true, message: data.message, like: data.like || null };
   } catch (error) {
     return { success: false, error: error.message };

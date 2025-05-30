@@ -7,7 +7,6 @@ export const getUserById = async (id) => {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
-
     if (!response.ok) {
       const errorData = await response.json();
       throw new Error(errorData?.error || "Failed fetching user");

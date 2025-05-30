@@ -1,7 +1,0 @@
-const express = require("express");
-const router = express.Router();
-const likeController = require("../controllers/likeController");
-const { verifyToken } = require("../middlewares/verifyToken");
-
-router.post("/:postId/like", verifyToken, likeController.toggleLikePost);
-module.exports = router;

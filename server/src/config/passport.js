@@ -4,32 +4,38 @@ const { PrismaClient } = require("../generated/prisma");
 const prisma = new PrismaClient();
 const { generateToken } = require("../middlewares/verifyToken");
 
-
 passport.use(
   new GoogleStrategy(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET, //make another instance for production
       callbackURL: `http://localhost:${process.env.APP_PORT}/auth/google/callback`,
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
         const email = profile.email || profile.emails?.[0]?.value;
-        const username = profile.displayName
-        const avatar   = profile.picture
+        const username = profile.displayName;
+        const avatar = profile.picture;
 
         if (!email) return done(null, false);
-        const user = await prisma.user.findUnique({ where: { email } });
- 
+        let user = await prisma.user.findUnique({ where: { email } });
+
         if (!user) {
           user = await prisma.user.create({
             data: {
               username,
               email,
               gender: "NON_SPECIFIED",
-              profilePicture: avatar,    
+              profilePicture: avatar,
             },
-          }); 
+          });
+        } else {
+          if (user.profilePicture !== avatar) {
+            user = await prisma.user.update({
+              where: { email },
+              data: { profilePicture: avatar },
+            });
+          }
         }
         const token = generateToken(user);
         return done(null, { ...user, token });

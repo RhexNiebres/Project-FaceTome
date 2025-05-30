@@ -6,7 +6,7 @@ const { verifyToken } = require("../middlewares/verifyToken");
 router.get("/:userId/followers", followController.getFollowers);
 router.get("/:userId/following", followController.getFollowing);
 
-router.post("/follow", verifyToken, followController.sendFollowRequest);
+router.post("/", verifyToken, followController.sendFollowRequest);
 router.put(
   "/:id/accept",
   verifyToken,

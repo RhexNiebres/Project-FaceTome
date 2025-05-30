@@ -1,4 +1,4 @@
-const { PrismaClient, Prisma } = require("../generated/prisma");
+const { PrismaClient, FollowRequestStatus } = require("../generated/prisma");
 const prisma = new PrismaClient();
 const bcrypt = require("bcryptjs");
 
@@ -25,14 +25,16 @@ exports.getAllUsers = async (req, res) => {
             followingId: currentUserId,
           },
           select: {
+            id: true,
             status: true,
           },
         },
-        following: {
+        followings: {
           where: {
             followerId: currentUserId,
           },
           select: {
+            id: true,
             status: true,
           },
         },
@@ -41,18 +43,16 @@ exports.getAllUsers = async (req, res) => {
 
     const response = users.map((user) => {
       const follower = user.followers[0];
-      const following = user.following[0];
+      const following = user.followings[0];
 
       const canFollow =
-        !follower || follower.status === Prisma.FollowRequestStatus.PENDING;
-      const isPendingRequest =
-        follower?.status === Prisma.FollowRequestStatus.PENDING;
-      const isFollowing =
-        follower?.status === Prisma.FollowRequestStatus.ACCEPTED;
+        !follower || follower.status === FollowRequestStatus.PENDING;
+      const isPendingRequest = follower?.status === FollowRequestStatus.PENDING;
+      const isFollowing = follower?.status === FollowRequestStatus.ACCEPTED;
       const isFollowingEachOther =
-        follower?.status === Prisma.FollowRequestStatus.ACCEPTED &&
-        following?.status === Prisma.FollowRequestStatus.ACCEPTED;
-      const hasCTA = following?.status === Prisma.FollowRequestStatus.PENDING;
+        follower?.status === FollowRequestStatus.ACCEPTED &&
+        following?.status === FollowRequestStatus.ACCEPTED;
+      const hasCTA = following?.status === FollowRequestStatus.PENDING;
 
       return {
         id: user.id,
@@ -63,6 +63,7 @@ exports.getAllUsers = async (req, res) => {
         isFollowingEachOther,
         canFollow,
         hasCTA,
+        followRequestId: follower?.id || null,
       };
     });
 
