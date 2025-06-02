@@ -6,6 +6,8 @@ import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import DeletePost from "./DeletePost";
 import ToggleLikePost from "./ToggleLikePost";
 import DeleteComment from "./DeleteComment";
+import { useUser } from "../context/UserContext";
+
 const AllPost = ({
   posts,
   loading,
@@ -14,6 +16,7 @@ const AllPost = ({
   onCommentAdded,
   onCommentDeleted,
 }) => {
+  const { user, getAvatar } = useUser();
   const userId = parseInt(localStorage.getItem("userId"));
   const [visibleComments, setVisibleComments] = useState({});
 
@@ -46,7 +49,14 @@ const AllPost = ({
           <div key={post.id} className="p-4 rounded-xl text-white w-1/2">
             <div className="bg-1 rounded-t text-white px-3 py-2">
               <div className="px-9">
-                {/* add user profile picture here */}
+                <img
+                  src={
+                    post.author.profilePicture || getAvatar(post.author.gender)
+                  }
+                  alt="User Avatar"
+                  className="w-10 h-10 rounded-full object-cover"
+                />
+
                 <h3>{post.author.username}</h3>
                 <h3 className="text-gray-400">
                   {formatDistanceToNow(new Date(post.createdAt), {
