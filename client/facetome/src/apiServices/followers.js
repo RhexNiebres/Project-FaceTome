@@ -1,7 +1,7 @@
 export const getFollowers = async (userId) => {
   try {
     const response = await fetch(
-      import.meta.env.VITE_HOST + `/follow/${userId}/followers`,
+      import.meta.env.VITE_HOST + `/follows/${userId}/followers`,
       {
         method: "GET",
         headers: {
@@ -26,7 +26,7 @@ export const getFollowers = async (userId) => {
 export const getFollowing = async (userId) => {
   try {
     const response = await fetch(
-      import.meta.env.VITE_HOST + `/follow/${userId}/following`,
+      import.meta.env.VITE_HOST + `/follows/${userId}/following`,
       {
         method: "GET",
         headers: {
@@ -50,7 +50,7 @@ export const getFollowing = async (userId) => {
 
 export const sendFollowRequest = async (followingId) => {
   try {
-    const response = await fetch(import.meta.env.VITE_HOST + `/follow`, {
+    const response = await fetch(import.meta.env.VITE_HOST + `/follows`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -74,7 +74,7 @@ export const sendFollowRequest = async (followingId) => {
 export const acceptFollowRequest = async (id) => {
   try {
     const response = await fetch(
-      import.meta.env.VITE_HOST + `/follow/${id}/accept`,
+      import.meta.env.VITE_HOST + `/follows/${id}/accept`,
       {
         method: "PUT",
         headers: {
@@ -99,7 +99,7 @@ export const acceptFollowRequest = async (id) => {
 export const rejectFollowRequest = async (id) => {
   try {
     const response = await fetch(
-      import.meta.env.VITE_HOST + `/follow/${id}/reject`,
+      import.meta.env.VITE_HOST + `/follows/${id}/reject`,
       {
         method: "PUT",
         headers: {
@@ -124,7 +124,7 @@ export const rejectFollowRequest = async (id) => {
 export const cancelFollow = async (followingId) => {
   try {
     const response = await fetch(
-      import.meta.env.VITE_HOST + `/follow/${followingId}`,
+      import.meta.env.VITE_HOST + `/follows/${followingId}`,
       {
         method: "DELETE",
         headers: {
