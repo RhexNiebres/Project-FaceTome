@@ -65,7 +65,7 @@ export const createPost = async ({ title, content }) => {
 
     const data = await response.json();
     return { success: true, post: data };
-  } catch(error){
+  } catch (error) {
     return { success: false, error: error.message };
   }
 };

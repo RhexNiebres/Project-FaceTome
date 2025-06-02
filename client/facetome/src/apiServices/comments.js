@@ -1,7 +1,7 @@
 export const createComment = async (postId, content) => {
   try {
     const response = await fetch(
-      import.meta.env.VITE_HOST + `/posts/${postId}/comments`,
+      import.meta.env.VITE_HOST + `/posts/${postId}/comment`,
       {
         method: "POST",
         headers: {

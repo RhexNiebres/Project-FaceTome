@@ -1,4 +1,4 @@
-const { PrismaClient, Prisma } = require("../generated/prisma");
+const { PrismaClient, FollowRequestStatus } = require("../generated/prisma");
 const prisma = new PrismaClient();
 
 exports.getAllPosts = async (req, res) => {
@@ -16,7 +16,7 @@ exports.getAllPosts = async (req, res) => {
                   .findMany({
                     where: {
                       followerId: currentUserId,
-                      status: Prisma.FollowRequestStatus.ACCEPTED,
+                      status: FollowRequestStatus.ACCEPTED,
                     },
                     select: {
                       followingId: true,
@@ -97,6 +97,9 @@ exports.deletePost = async (req, res) => {
         .status(403)
         .json({ error: "You are no authorized to delete this post" });
     }
+      await prisma.like.deleteMany({
+      where: { postId },
+    });
 
     await prisma.comment.deleteMany({
       where: { postId },
