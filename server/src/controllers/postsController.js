@@ -61,29 +61,32 @@ exports.createPost = async (req, res) => {
         .status(400)
         .json({ error: "Title, content and user are required" });
     }
-    const newPost = await prisma.post.upsert({
-      where: {
-        title,
-      },
-      update: {},
-      create: {
+
+    const existingPost = await prisma.post.findFirst({
+      where: { title },
+    });
+
+    if (existingPost) {
+      return res.status(400).json({
+        error: `A post titled "${title}" already exists. Please use a different title.`,
+      });
+    }
+
+    const newPost = await prisma.post.create({
+      data: {
         title,
         content,
         authorId,
       },
     });
 
-    if (newPost.authorId !== authorId || newPost.content !== content) {
-      return res.status(400).json({
-        error: `A post titled "${title}" already exists. Please use a different title.`,
-      });
-    }
     res.status(201).json(newPost);
   } catch (error) {
     console.error("Error creating post:", error);
     res.status(500).json({ error: "Server error while creating post" });
   }
 };
+
 
 exports.deletePost = async (req, res) => {
   try {
