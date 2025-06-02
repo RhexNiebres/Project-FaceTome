@@ -9,5 +9,4 @@ router.get("/", verifyToken, postController.getAllPosts);
 router.post("/", verifyToken, postController.createPost);
 router.delete("/:id", verifyToken, postController.deletePost);
 router.post("/:postId/like", verifyToken, likeController.toggleLikePost);
-router.post("/:postId/", verifyToken, commentController.createComment);
 module.exports = router;
