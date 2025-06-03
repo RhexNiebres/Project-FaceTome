@@ -61,27 +61,30 @@ const Home = () => {
       })
     );
   };
-const handleCommentDeleted = (postId, commentId) => {
-  setPosts((prevPosts) =>
-    prevPosts.map((post) => {
-      if (post.id === postId) {
-        return {
-          ...post,
-          comments: post.comments.filter((comment) => comment.id !== commentId),
-        };
-      }
-      return post;
-    })
-  );
-};
+  const handleCommentDeleted = (postId, commentId) => {
+    setPosts((prevPosts) =>
+      prevPosts.map((post) => {
+        if (post.id === postId) {
+          return {
+            ...post,
+            comments: post.comments.filter(
+              (comment) => comment.id !== commentId
+            ),
+          };
+        }
+        return post;
+      })
+    );
+  };
 
   return (
-    <div className="flex flex-col bg-4 justify-center">
+    <div className="flex flex-col bg-4 justify-center ">
       <NavBar />
+
       <div className="flex justify-center">
         <CreatePost onPostCreated={handlePostCreated} />
       </div>
-      <div className="flex justify-center">
+      <div className="flex items-center p-16">
         <AllPost
           posts={posts}
           loading={loading}
