@@ -41,7 +41,7 @@ const CreatePost = ({ onPostCreated }) => {
           onChange={(e) => setTitle(e.target.value)}
           placeholder="What's on your mind?"
           required
-          className="p-2 m-2 rounded-xl w-full text-gray-500 bg-1"
+          className="p-2 m-2 rounded-xl w-full text-gray-200 bg-1"
         />
         {showForm && (
           <>
@@ -54,7 +54,7 @@ const CreatePost = ({ onPostCreated }) => {
               onChange={(e) => setContent(e.target.value)}
               rows="1"
               required
-              className="p-2 m-2 rounded-xl w-full text-gray-500 bg-1"
+              className="p-2 m-2 rounded-xl w-full text-gray-200 bg-1"
             />
             <div className="flex justify-end">
               <button
