@@ -3,7 +3,8 @@ import { getAllUsers } from "../apiServices/users";
 import NavBar from "../components/NavBar";
 import FollowButton from "../components/FollowButton";
 import FollowRequestResponse from "../components/FollowRequestResponse"; // Adjust path as needed
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 const FindFriendsPage = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -23,7 +24,16 @@ const FindFriendsPage = () => {
     fetchUsers();
   }, []);
 
-  if (loading) return <div>Loading users...</div>;
+  if (loading)
+    return (
+      <div className="flex justify-center items-center p-10 bg-4 h-screen">
+        <FontAwesomeIcon
+          icon={faCircleNotch}
+          spin
+          className="text-blue-500 text-3xl"
+        />
+      </div>
+    );
   if (error) return <div>Error: {error}</div>;
 
   return (
@@ -55,9 +65,12 @@ const FindFriendsPage = () => {
                   className="p-4 bg-1 w-96 rounded font-medium mb-3"
                   key={user.id}
                 >
-                  <div className="text-white flex flex-col gap-2">
-                    <span className="text-sm text-gray-300">{status}</span>
-                    <span>{user.username}</span>
+                  <div className="text-white flex justify-between gap-2">
+                    <div className="flex flex-col">
+                      <span className="text-sm text-gray-300">{status}</span>
+                      <span>{user.username}</span>
+                    </div>
+
                     {user.isFollowingEachOther ? null : user.isPendingRequest ? (
                       <FollowRequestResponse requestId={user.followRequestId} />
                     ) : (
