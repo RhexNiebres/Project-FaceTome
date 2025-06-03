@@ -17,7 +17,7 @@ const ProfileButton = ({ user, getAvatar }) => {
       <span>{user.username}</span>
     </button>
   ) : (
-    <div className="flex justify-center items-center p-10">
+    <div className="flex justify-center items-center p-2">
       <FontAwesomeIcon
         icon={faCircleNotch}
         spin
