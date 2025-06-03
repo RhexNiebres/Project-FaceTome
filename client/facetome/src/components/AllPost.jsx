@@ -16,7 +16,7 @@ const AllPost = ({
   onCommentAdded,
   onCommentDeleted,
 }) => {
-  const { user, getAvatar } = useUser();
+  const { getAvatar } = useUser();
   const userId = parseInt(localStorage.getItem("userId"));
   const [visibleComments, setVisibleComments] = useState({});
 
@@ -39,30 +39,35 @@ const AllPost = ({
     );
 
   return (
-    <div className="flex flex-col items-center gap-y-4 w-screen h-screen">
+    <div className="flex flex-col items-center gap-y-4 w-screen min-h-screen">
       {posts.length === 0 ? (
         <div className="flex items-center font-bold text-center text-gray-200 h-screen">
           No posts Yet.
         </div>
       ) : (
         posts.map((post) => (
-          <div key={post.id} className="p-4 rounded-xl text-white w-1/2">
+          <div key={post.id} className="p-4 rounded-xl text-white w-1/2 ">
             <div className="bg-1 rounded-t text-white px-3 py-2">
-              <div className="px-9">
-                <img
-                  src={
-                    post.author.profilePicture || getAvatar(post.author.gender)
-                  }
-                  alt="User Avatar"
-                  className="w-10 h-10 rounded-full object-cover"
-                />
-
-                <h3>{post.author.username}</h3>
-                <h3 className="text-gray-400">
-                  {formatDistanceToNow(new Date(post.createdAt), {
-                    addSuffix: true,
-                  })}
-                </h3>
+              <div className="flex space-x-2 items-center">
+                <div>
+                  <img
+                    src={
+                      post.author.profilePicture ||
+                      getAvatar(post.author.gender)
+                    }
+                    alt="User Avatar"
+                    className="w-10 h-10 rounded-full object-cover"
+                  />
+                </div>
+                <div>
+                  {" "}
+                  <h3>{post.author.username}</h3>
+                  <h3 className="text-gray-400">
+                    {formatDistanceToNow(new Date(post.createdAt), {
+                      addSuffix: true,
+                    })}
+                  </h3>
+                </div>
               </div>
               <h2 className="px-">{post.title}</h2>
             </div>
@@ -90,7 +95,9 @@ const AllPost = ({
                 >
                   {visibleComments[post.id] ? "Hide Comments" : "Comment"}
                 </button>
-                <DeletePost postId={post.id} onDelete={onDelete} />
+                {post.authorId === userId && (
+                  <DeletePost postId={post.id} onDelete={onDelete} />
+                )}
               </div>
 
               {visibleComments[post.id] && (
