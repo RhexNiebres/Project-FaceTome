@@ -10,13 +10,13 @@ export const UserProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  const token = getToken();
 
   useEffect(() => {
     const fetchUser = async () => {
+      const token = getToken();
       const userId = localStorage.getItem("userId");
+
       if (!userId || !token) {
-        setError("No user or token found");
         setLoading(false);
         return;
       }
@@ -38,7 +38,7 @@ export const UserProvider = ({ children }) => {
     };
 
     fetchUser();
-  }, [token]);
+  }, [navigate]);
 
   const getAvatar = (gender) => {
     switch (gender?.toLowerCase()) {
