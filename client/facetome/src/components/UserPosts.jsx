@@ -6,7 +6,7 @@ import AddComment from "./AddComment";
 import DeletePost from "./DeletePost";
 import ToggleLikePost from "./ToggleLikePost";
 import DeleteComment from "./DeleteComment";
-import { useUser } from "../context/UserContext";
+import { useUser } from "../provider/UserProvider";
 
 const UserPost = ({
   posts,

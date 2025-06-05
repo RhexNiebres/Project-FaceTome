@@ -1,7 +1,7 @@
 import { getToken, logout } from "../services/auth";
 import { useNavigate } from "react-router-dom";
 import ProfileButton from "./ProfileButton";
-import { useUser } from "../context/UserContext";
+import { useUser } from "../provider/UserProvider";
 
 const NavBar = () => {
   const { user, getAvatar } = useUser();
