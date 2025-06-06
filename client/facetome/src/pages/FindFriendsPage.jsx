@@ -23,7 +23,13 @@ const FindFriendsPage = () => {
     };
     fetchUsers();
   }, []);
-
+  const handleUserStatus = (userId, updates) => {
+    setUsers((prevUsers) =>
+      prevUsers.map((user) =>
+        user.id === userId ? { ...user, ...updates } : user
+      )
+    );
+  };
   if (loading)
     return (
       <div className="flex justify-center items-center p-10 bg-4 h-screen">
@@ -37,11 +43,9 @@ const FindFriendsPage = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="bg-4">
+    <div className="bg-slate-100">
       <NavBar />
-      <h1 className="text-gray-200 text-center font-bold p-6 text-xl">
-        Find Friends
-      </h1>
+      <h1 className="text-4 text-center font-bold p-6 text-xl">Find Friends</h1>
       {users.length > 0 ? (
         <div className="text-gray-200 p-2 flex flex-col items-center h-screen">
           <ul>
@@ -69,16 +73,23 @@ const FindFriendsPage = () => {
                     <div className="flex flex-col">
                       <span className="text-sm text-gray-300">{status}</span>
                       <span>{user.username}</span>
+                      {/*
+                      4.center errors bellow button*/}
                     </div>
 
                     {user.isFollowingEachOther ? null : user.isPendingRequest ? (
-                      <FollowRequestResponse requestId={user.followRequestId} />
+                      <FollowRequestResponse
+                        requestId={user.followRequestId}
+                        userId={user.id}
+                        onStatusChange={handleUserStatus}
+                      />
                     ) : (
                       <FollowButton
                         followingId={user.id}
                         initiallyFollowed={user.isFollowing}
                         isPendingRequest={user.isPendingRequest}
                         hasCTA={user.hasCTA}
+                        onStatusChange={handleUserStatus}
                       />
                     )}
                   </div>
