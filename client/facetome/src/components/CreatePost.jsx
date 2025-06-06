@@ -28,10 +28,9 @@ const CreatePost = ({ onPostCreated }) => {
   };
 
   return (
-    <div className="bg-2 p-4 m-4 text-white rounded w-1/2 flex justify-center">
+    <div className="bg-2 p-4 m-4 text-white rounded-xl w-1/2 flex justify-center shadow-xl">
       <form onSubmit={handleSubmit}>
         <label htmlFor="title" className="text-l font-bold">
-          Title
         </label>
         <input
           id="title"
@@ -41,11 +40,11 @@ const CreatePost = ({ onPostCreated }) => {
           onChange={(e) => setTitle(e.target.value)}
           placeholder="What's on your mind?"
           required
-          className="p-2 m-2 rounded-xl w-full text-gray-200 bg-1"
+          className="p-2 m-2 rounded-xl w-full text-4 bg-gray-100"
         />
         {showForm && (
           <>
-            <label htmlFor="content" className="text-l font-bold">
+            <label htmlFor="content" className="text-l font-bold pl-3">
               Content
             </label>
             <textarea
@@ -54,13 +53,13 @@ const CreatePost = ({ onPostCreated }) => {
               onChange={(e) => setContent(e.target.value)}
               rows="1"
               required
-              className="p-2 m-2 rounded-xl w-full text-gray-200 bg-1"
+              className="p-2 m-2 rounded-xl w-full text-4 bg-gray-100"
             />
             <div className="flex justify-end">
               <button
                 type="submit"
                 disabled={loading}
-                className="p-2 m-2 bg-1 text-slate-200 hover:bg-2 rounded-xl "
+                className="p-2 m-2 bg-gray-200 text-2 hover:bg-1 hover:text-gray-100 rounded-xl transition duration-300 ease-in-out"
               >
                 {loading ? (
                   <div className="flex justify-center w-20">
