@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useUser } from "../context/UserContext";
+import { useUser } from "../provider/UserProvider";
 import NavBar from "../components/NavBar";
 import UserPost from "../components/UserPosts";
 import UserProfileForm from "../components/UserProfileForm";
