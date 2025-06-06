@@ -4,12 +4,17 @@ const { PrismaClient } = require("../generated/prisma");
 const prisma = new PrismaClient();
 const { generateToken } = require("../middlewares/verifyToken");
 
+const isProduction = process.env.NODE_ENV === "production";
+const callbackURL = isProduction
+  ? `${process.env.SERVER_HOST}/auth/google/callback`
+  : `${process.env.SERVER_HOST}${process.env.APP_PORT}/auth/google/callback`;
+
 passport.use(
   new GoogleStrategy(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET, //make another instance for production
-      callbackURL: `${process.env.SERVER_HOST}/auth/google/callback`,
+      callbackURL: callbackURL,
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
