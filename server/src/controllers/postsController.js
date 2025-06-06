@@ -61,25 +61,23 @@ exports.createPost = async (req, res) => {
         .status(400)
         .json({ error: "Title, content and user are required" });
     }
-
-    const existingPost = await prisma.post.findFirst({
-      where: { title },
-    });
-
-    if (existingPost) {
-      return res.status(400).json({
-        error: `A post titled "${title}" already exists. Please use a different title.`,
-      });
-    }
-
-    const newPost = await prisma.post.create({
-      data: {
+    const newPost = await prisma.post.upsert({
+      where: {
+        title,
+      },
+      update: {},
+      create: {
         title,
         content,
         authorId,
       },
     });
 
+    if (newPost.authorId !== authorId || newPost.content !== content) {
+      return res.status(400).json({
+        error: `A post titled "${title}" already exists. Please use a different title.`,
+      });
+    }
     res.status(201).json(newPost);
   } catch (error) {
     console.error("Error creating post:", error);
