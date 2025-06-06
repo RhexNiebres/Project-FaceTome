@@ -1,4 +1,4 @@
-const { PrismaClient, FollowRequestStatus} = require("../generated/prisma");
+const { PrismaClient, FollowRequestStatus } = require("../generated/prisma");
 const prisma = new PrismaClient();
 
 exports.getFollowers = async (req, res) => {
@@ -9,10 +9,7 @@ exports.getFollowers = async (req, res) => {
       where: {
         followingId: parseInt(userId),
         status: {
-          in: [
-           FollowRequestStatus.PENDING,
-            FollowRequestStatus.ACCEPTED,
-          ], // to filter only the desired statuses.
+          in: [FollowRequestStatus.PENDING, FollowRequestStatus.ACCEPTED], // to filter only the desired statuses.
         },
       },
       include: {
@@ -34,10 +31,7 @@ exports.getFollowing = async (req, res) => {
       where: {
         followerId: parseInt(userId),
         status: {
-          in: [
-           FollowRequestStatus.PENDING,
-           FollowRequestStatus.ACCEPTED,
-          ],
+          in: [FollowRequestStatus.PENDING, FollowRequestStatus.ACCEPTED],
         },
       },
       include: {
@@ -71,7 +65,9 @@ exports.sendFollowRequest = async (req, res) => {
     });
 
     if (existingAcceptedFollow) {
-      return res.status(400).json({ error: "Follow relationship already exists." });
+      return res
+        .status(400)
+        .json({ error: "Follow relationship already exists." });
     }
 
     const followRequest = await prisma.userFollow.upsert({
@@ -99,7 +95,6 @@ exports.sendFollowRequest = async (req, res) => {
   }
 };
 
-
 exports.acceptFollowRequest = async (req, res) => {
   const { id } = req.params;
 
@@ -109,7 +104,7 @@ exports.acceptFollowRequest = async (req, res) => {
       data: { status: FollowRequestStatus.ACCEPTED },
     });
 
-    const backFollow= await prisma.userFollow.findUnique({
+    const backFollow = await prisma.userFollow.findUnique({
       where: {
         followerId_followingId: {
           followerId: followRequest.followingId,
@@ -135,7 +130,6 @@ exports.acceptFollowRequest = async (req, res) => {
   }
 };
 
-
 exports.rejectFollowRequest = async (req, res) => {
   const { id } = req.params;
 
@@ -144,8 +138,13 @@ exports.rejectFollowRequest = async (req, res) => {
       where: { id: parseInt(id) },
       data: { status: FollowRequestStatus.REJECTED },
     });
-
-    res.json(followRequest);
+    await prisma.userFollow.delete({
+      where: { id: parseInt(id) },
+    });                                                                                             
+    res.json({
+      message: "Follow request rejected.",
+      rejectedRequest: followRequest,
+    });
   } catch (err) {
     console.error(err);
     res.status(404).json({ error: "Follow request not found." });
