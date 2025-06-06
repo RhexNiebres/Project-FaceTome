@@ -1,7 +1,10 @@
 import { useState } from "react";
-import { acceptFollowRequest, rejectFollowRequest } from "../apiServices/followers"; // Adjust path as needed
+import {
+  acceptFollowRequest,
+  rejectFollowRequest,
+} from "../apiServices/followers";
 
-const FollowRequestResponse = ({ requestId }) => {
+const FollowRequestResponse = ({ requestId, userId, onStatusChange }) => {
   const [loading, setLoading] = useState(false);
   const [status, setStatus] = useState(null);
   const [error, setError] = useState("");
@@ -14,6 +17,13 @@ const FollowRequestResponse = ({ requestId }) => {
 
     if (result.success) {
       setStatus("accepted");
+      if (onStatusChange) {
+        onStatusChange(userId, {
+          isFollowing: true,
+          isPendingRequest: false,
+          isFollowingEachOther: true,
+        });
+      }
     } else {
       setStatus("error");
       setError(result.error);
@@ -28,6 +38,12 @@ const FollowRequestResponse = ({ requestId }) => {
 
     if (result.success) {
       setStatus("rejected");
+      if (onStatusChange) {
+        onStatusChange(userId, {
+          isPendingRequest: false,
+          followRequestId: null,
+        });
+      }
     } else {
       setStatus("error");
       setError(result.error);

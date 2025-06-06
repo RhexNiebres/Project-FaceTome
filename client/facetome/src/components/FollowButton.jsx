@@ -5,6 +5,7 @@ const FollowButton = ({
   followingId,
   initiallyFollowed = false,
   hasCTA = false,
+  onStatusChange,
 }) => {
   const [followed, setFollowed] = useState(initiallyFollowed);
   const [pendingRequest, setPendingRequest] = useState(hasCTA);
@@ -32,9 +33,21 @@ const FollowButton = ({
       }
 
       if (result.success) {
-        if (followed) setFollowed(false);
-        if (pendingRequest) setPendingRequest(false);
-        if (!followed && !pendingRequest) setPendingRequest(true);
+        const updates = {};
+        if (followed) {
+          setFollowed(false);
+          updates.isFollowing = false;
+        } else if (pendingRequest) {
+          setPendingRequest(false);
+          updates.hasCTA = false;
+        } else {
+          setPendingRequest(true);
+          updates.hasCTA = true;
+        }
+
+        if (onStatusChange) {
+          onStatusChange(followingId, updates);
+        }
       } else {
         setError(result.error || "Something went wrong.");
       }
@@ -71,7 +84,9 @@ const FollowButton = ({
       >
         {getButtonText()}
       </button>
-      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+      <div>
+         {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+      </div>
     </div>
   );
 };
