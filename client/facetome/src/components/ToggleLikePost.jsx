@@ -3,7 +3,6 @@ import { toggleLikePost } from "../apiServices/like";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsUp as solidHeart } from "@fortawesome/free-solid-svg-icons";
 import { faThumbsUp as regularHeart } from "@fortawesome/free-regular-svg-icons";
-import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 
 const ToggleLikePost = ({ postId, initialLiked = false, onToggle }) => {
   const [liked, setLiked] = useState(initialLiked);
@@ -29,23 +28,12 @@ const ToggleLikePost = ({ postId, initialLiked = false, onToggle }) => {
   return (
     <div>
       <button onClick={handleToggleLike} disabled={loading}>
-        {loading ? (
-          <div className="">
-            <FontAwesomeIcon
-              icon={faCircleNotch}
-              spin
-              className="text-blue-500 text-3xl"
-            />
-          </div>
-        ) : (
-          <>
-            {" "}
-            <FontAwesomeIcon
-              icon={liked ? solidHeart : regularHeart}
-              className={liked ? "text-blue-500" : ""}
-            />{" "}
-          </>
-        )}
+         <FontAwesomeIcon
+          icon={liked ? solidHeart : regularHeart}
+          className={`transition-all duration-300 ease-in-out transform ${
+            liked ? "text-blue-500 scale-110" : "text-gray-500 scale-100"
+          }`}
+        />
       </button>
       {error && <span className="text-sm text-red-500">{error}</span>}
     </div>
