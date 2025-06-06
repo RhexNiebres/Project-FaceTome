@@ -13,7 +13,6 @@ const usersRoutes = require("./routes/usersRoute");
 const followRoutes = require("./routes/followRoute")
 const postRoutes = require("./routes/postRoute")
 const commentRoutes = require("./routes/commentsRoute")
-const postCommentRoutes = require("./routes/postCommentRoute")
 const cors = require("cors");
 
 const allowedOrigins = [process.env.CLIENT_HOST,process.env.FACETOME_CLIENT_HOST];
@@ -36,7 +35,6 @@ app.use("/", authRoutes);
 app.use("/users", usersRoutes);
 app.use("/follows", followRoutes);  
 app.use("/posts", postRoutes); 
-app.use("/posts", postCommentRoutes);     
 app.use("/comments", commentRoutes); 
  
 
