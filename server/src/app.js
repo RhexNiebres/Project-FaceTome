@@ -33,8 +33,8 @@ app.use(passport.initialize());
 app.use("/", indexRoutes);
 app.use("/", authRoutes);
 app.use("/users", usersRoutes);
-app.use("/follow", followRoutes);  
-app.use("/posts", postRoutes);   
+app.use("/follows", followRoutes);  
+app.use("/posts", postRoutes); 
 app.use("/comments", commentRoutes); 
  
 

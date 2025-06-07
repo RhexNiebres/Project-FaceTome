@@ -28,7 +28,14 @@ exports.getAllPosts = async (req, res) => {
         },
       },
       include: {
-        author: { select: { username: true } },
+        author: {
+          select: {
+            username: true,
+            profilePicture: true,
+            gender: true,
+          },
+        },
+
         comments: { include: { author: true } },
         likes: true,
       },
@@ -43,7 +50,6 @@ exports.getAllPosts = async (req, res) => {
     res.status(500).json({ error: "Server error while fetching posts" });
   }
 };
-
 
 exports.createPost = async (req, res) => {
   try {
@@ -79,6 +85,7 @@ exports.createPost = async (req, res) => {
   }
 };
 
+
 exports.deletePost = async (req, res) => {
   try {
     const postId = parseInt(req.params.id);
@@ -97,7 +104,7 @@ exports.deletePost = async (req, res) => {
         .status(403)
         .json({ error: "You are no authorized to delete this post" });
     }
-      await prisma.like.deleteMany({
+    await prisma.like.deleteMany({
       where: { postId },
     });
 

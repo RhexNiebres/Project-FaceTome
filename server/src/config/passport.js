@@ -4,12 +4,14 @@ const { PrismaClient } = require("../generated/prisma");
 const prisma = new PrismaClient();
 const { generateToken } = require("../middlewares/verifyToken");
 
+console.log("the GOOGLE_CALLBACK_URL is:", process.env.GOOGLE_CALLBACK_URL);
+
 passport.use(
   new GoogleStrategy(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET, //make another instance for production
-      callbackURL: `http://localhost:${process.env.APP_PORT}/auth/google/callback`,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET, 
+      callbackURL: process.env.GOOGLE_CALLBACK_URL,
     },
     async (accessToken, refreshToken, profile, done) => {
       try {

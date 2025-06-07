@@ -1,6 +1,6 @@
 [build]
-  base = "client/messenger"
-  publish = "client/messenger/dist"
+  base = "client/facetome"
+  publish = "dist"
   command = "npm run build"
 
 [[redirects]]

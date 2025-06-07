@@ -1,41 +1,12 @@
 import { getToken, logout } from "../services/auth";
 import { useNavigate } from "react-router-dom";
 import ProfileButton from "./ProfileButton";
-import { useState, useEffect } from "react";
-import { getUserById } from "../apiServices/users";
+import { useUser } from "../provider/UserProvider";
 
 const NavBar = () => {
-  const [user, setUser] = useState(null);
-  const [error, setError] = useState(null);
+  const { user, getAvatar } = useUser();
   const navigate = useNavigate();
   const token = getToken();
-  const userId = localStorage.getItem("userId");
-
-  useEffect(() => {
-    if (!userId) {
-      setError("User not found in localStorage.");
-      return;
-    }
-
-    getUserById(userId).then((res) => {
-      if (res.success) {
-        setUser(res.user);
-      } else {
-        setError(res.error || "Failed to fetch user");
-      }
-    });
-  }, [userId]);
-
-  const getAvatar = (gender) => {
-    switch (gender?.toLowerCase()) {
-      case "male":
-        return "/male.jpg";
-      case "female":
-        return "/female.jpg";
-      default:
-        return "/non_specified.jpg";
-    }
-  };
 
   return (
     <nav className="bg-2 p-1 flex justify-between items-center text-white sticky top-0 z-50">
