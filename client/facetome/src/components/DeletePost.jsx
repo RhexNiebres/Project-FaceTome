@@ -8,6 +8,11 @@ const DeletePost = ({ postId, onDelete }) => {
   const [error, setError] = useState(null);
 
   const handleDelete = async () => {
+    const confirmed = window.confirm(
+      "Are you sure you want to delete this post?"
+    );
+    if (!confirmed) return;
+
     setLoading(true);
     setError(null);
 
