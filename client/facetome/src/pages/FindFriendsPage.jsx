@@ -73,8 +73,6 @@ const FindFriendsPage = () => {
                     <div className="flex flex-col">
                       <span className="text-sm text-gray-300">{status}</span>
                       <span>{user.username}</span>
-                      {/*
-                      4.center errors bellow button*/}
                     </div>
 
                     {user.isFollowingEachOther ? null : user.isPendingRequest ? (
@@ -99,7 +97,9 @@ const FindFriendsPage = () => {
           </ul>
         </div>
       ) : (
-        <p>No Users Found </p>
+        <div className="flex justify-center items-center h-screen w-full ">
+          <p className="font-bold text-gray-400">No Users Yet.</p>
+        </div>
       )}
     </div>
   );

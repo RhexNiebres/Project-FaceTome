@@ -29,7 +29,7 @@ const UserPost = ({
 
   if (loading)
     return (
-      <div className="flex justify-center p-10 bg-4 h-screen">
+      <div className="flex justify-center items-center p-10 bg-gray-100 h-screen w-full">
         <FontAwesomeIcon
           icon={faCircleNotch}
           spin
@@ -39,16 +39,16 @@ const UserPost = ({
     );
 
   return (
-    <div className="flex flex-col items-center gap-y-4 w-screen min-h-screen mt-14">
+     <div className="flex flex-col items-center gap-y-4 w-screen min-h-screen">
       {posts.length === 0 ? (
-        <div className="flex items-center font-bold text-center text-gray-200 h-screen">
+        <div className="flex items-center font-bold text-center text-gray-400 h-screen">
           No posts Yet.
         </div>
       ) : (
         posts.map((post) => (
           <div key={post.id} className="p-4 rounded-xl text-white w-1/2">
-              <div className="bg-1 rounded-t text-white px-3 py-2">
-              <div className="flex space-x-2 items-center">
+            <div className="bg-4 rounded-t-2xl text-white px-3 py-2">
+              <div className="flex space-x-2 items-center ">
                 <div>
                   <img
                     src={
@@ -72,14 +72,18 @@ const UserPost = ({
               <h2 className="px-">{post.title}</h2>
             </div>
 
-            <div className="bg-2 rounded-b">
-              <div className="p-5 w-full bg-white text-black">{post.content}</div>
+            <div className="bg-2 rounded-b-2xl">
+              <div className="p-10 border-x-4 w-full bg-white text-black rounded-xl">
+                {post.content}
+              </div>
 
               <div className="flex justify-around items-center px-4 py-2">
                 <div className="flex gap-2 hover:bg-1 p-2 rounded">
                   <ToggleLikePost
                     postId={post.id}
-                    initialLiked={post.likes.some((like) => like.userId === userId)}
+                    initialLiked={post.likes.some(
+                      (like) => like.userId === userId
+                    )}
                     onToggle={(newLiked) => onLikeToggle(post.id, newLiked)}
                   />
                   <p>{post.likes.length}</p>
@@ -87,24 +91,26 @@ const UserPost = ({
 
                 <button
                   onClick={() => toggleCommentForm(post.id)}
-                  className="text-sm text-gray-200 hover:bg-1 p-2 rounded"
+                  className="text-sm text-slate-100 bg-1 hover:bg-gray-500 px-3 py-1 rounded"
                 >
-                  {visibleComments[post.id] ? "Hide Comments" : "Comment"}
+                  {visibleComments[post.id] ? "Hide Comments" : "Add Comment"}
                 </button>
-
-                <DeletePost postId={post.id} onDelete={onDelete} />
+                {post.authorId === userId && (
+                  <DeletePost postId={post.id} onDelete={onDelete} />
+                )}
               </div>
 
               {visibleComments[post.id] && (
-                <div className="px-8 pb-4">
-                  <div className="mt-2 max-h-28 overflow-y-auto bg-1 rounded p-2 ">
+                <div className="px-4 pb-4">
+                  <div className=" max-h-28 overflow-y-auto bg-1 rounded p-2 ">
                     {post.comments.map((comment) => (
                       <div
                         key={comment.id}
-                        className="p-2 border-b text-sm text-gray-300 flex justify-between"
+                        className="p-2 border rounded-xl my-2  text-sm text-gray-300 flex justify-between"
                       >
                         <p>
-                          <strong>{comment.author.username}:</strong> {comment.content}
+                          <strong>{comment.author.username}:</strong>{" "}
+                          {comment.content}
                         </p>
                         {comment.author.id === userId && (
                           <DeleteComment
