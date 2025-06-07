@@ -59,7 +59,7 @@ const CreatePost = ({ onPostCreated }) => {
             onChange={(e) => setTitle(e.target.value)}
             placeholder="What's on your mind?"
             required
-            className="p-2 m-2 rounded-xl w-full text-4 bg-gray-100"
+            className="p-2 rounded-xl w-full text-4 bg-gray-100"
           />
         ) : (
           <>
