@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { updateUser } from "../apiServices/users";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
@@ -14,6 +14,14 @@ const UserProfileForm = ({ user, setUser, getAvatar }) => {
   const [loading, setLoading] = useState(false);
   const [passwordUpdated, setPasswordUpdated] = useState(false);
   const isPasswordEditable = !!user?.password;
+
+  useEffect(() => {
+    if (user) {
+      setNewUsername(user.username || "");
+      setNewEmail(user.email || "");
+      setNewGender(user.gender || "");
+    }
+  }, [user]);
 
   const handleSaveEdit = async () => {
     const usernameRegex = /^.{7,}$/;
@@ -50,10 +58,10 @@ const UserProfileForm = ({ user, setUser, getAvatar }) => {
         gender: newGender,
       };
 
-      const updateResult = await updateUser(userId, updatedData);
+      const updateResult = await updateUser(user.id, updatedData);
 
       if (updateResult.success) {
-        setUser(updateResult.user);
+        setUser({ ...user, ...updateResult.user });
         setEditError(null);
 
         if (newPassword) {
@@ -165,7 +173,7 @@ const UserProfileForm = ({ user, setUser, getAvatar }) => {
 
               <label
                 htmlFor="newGender"
-                className="block font-semibold text-gray-00"
+                className="block font-semibold text-gray-300"
               >
                 Gender
               </label>
@@ -182,7 +190,10 @@ const UserProfileForm = ({ user, setUser, getAvatar }) => {
             </div>
             <div className="flex gap-4 mt-4">
               <button
-                onClick={handleSaveEdit}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleSaveEdit();
+                }}
                 disabled={isSaveDisabled || loading}
                 className={`px-4 py-2 rounded-md text-white scale-95 transition-transform duration-300 ${
                   isSaveDisabled || loading
