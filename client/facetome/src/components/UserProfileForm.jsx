@@ -90,7 +90,7 @@ const UserProfileForm = ({ user, setUser, getAvatar }) => {
         </p>
       )}
       {user ? (
-        <div className="flex flex-col text-white items-center justify-left mt-20 bg-1 rounded-2xl p-10 mx-auto max-w-lg w-full shadow-2xl">
+        <div className="flex flex-col text-white items-center justify-left mt-20 bg-4 rounded-2xl p-10 mx-auto max-w-lg w-full shadow-2xl">
           <img
             src={user.profilePicture || getAvatar(user.gender)}
             alt="User Avatar"

@@ -86,7 +86,7 @@ const UserProfilePage = () => {
   return (
     <div className="overflow-hidden">
       <NavBar />
-      <div className=" min-h-screen min-w-screen bg-4">
+      <div className=" min-h-screen min-w-screen bg-gray-100">
         <div className="flex justify-center">
           <UserProfileForm user={user} getAvatar={getAvatar} />
 
