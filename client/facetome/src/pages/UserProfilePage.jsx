@@ -8,7 +8,7 @@ import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import { getAllPostsForCurrentUser } from "../apiServices/posts";
 
 const UserProfilePage = () => {
-  const { user, error, getAvatar } = useUser();
+  const { user, setUser, error, getAvatar } = useUser();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -49,7 +49,7 @@ const UserProfilePage = () => {
     setPosts((prevPosts) =>
       prevPosts.map((post) =>
         post.id === postId
-          ? { ...post, comments: [...post.comments, newComment] }
+          ? { ...post, comments: [newComment, ...post.comments] }
           : post
       )
     );
@@ -88,7 +88,11 @@ const UserProfilePage = () => {
       <NavBar />
       <div className=" min-h-screen min-w-screen bg-gray-100">
         <div className="flex justify-center">
-          <UserProfileForm user={user} getAvatar={getAvatar} />
+          <UserProfileForm
+            user={user}
+            getAvatar={getAvatar}
+            setUser={setUser}
+          />
 
           <UserPost
             posts={posts}

@@ -27,7 +27,11 @@ const AddComment = ({ postId, onCommentAdded }) => {
         required
         className="p-2 w-full rounded text-black "
       ></textarea>
-      <button type="submit" disabled={loading || content === ""}>
+      <button
+        className="bg-green-500 p-1 rounded text-4 font-semibold hover:bg-green-400"
+        type="submit"
+        disabled={loading || content === ""}
+      >
         {loading ? "Adding comment" : "Add Comment"}
       </button>
     </form>

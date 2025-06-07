@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { createPost } from "../apiServices/posts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
@@ -9,6 +9,7 @@ const CreatePost = ({ onPostCreated }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [showForm, setShowForm] = useState(false);
+  const formRef = useRef(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,8 +28,27 @@ const CreatePost = ({ onPostCreated }) => {
     setLoading(false);
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (formRef.current && !formRef.current.contains(event.target)) {
+        setShowForm(false);
+      }
+    };
+
+    if (showForm) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [showForm]);
+
   return (
-    <div className="bg-2 p-4 m-4 text-white rounded-xl w-1/2  shadow-xl">
+    <div
+      ref={formRef}
+      className="bg-2 p-4 m-4 text-white rounded-xl w-1/2 shadow-xl"
+    >
       <form onSubmit={handleSubmit}>
         {!showForm ? (
           <input
@@ -39,7 +59,7 @@ const CreatePost = ({ onPostCreated }) => {
             onChange={(e) => setTitle(e.target.value)}
             placeholder="What's on your mind?"
             required
-            className="p-2 m-2 rounded-xl w-full text-4 bg-gray-100"
+            className="p-2 rounded-xl w-full text-4 bg-gray-100"
           />
         ) : (
           <>

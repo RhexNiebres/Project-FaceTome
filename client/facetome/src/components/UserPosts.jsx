@@ -1,4 +1,4 @@
-import { useState} from "react";
+import { useState, useEffect } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
@@ -16,9 +16,19 @@ const UserPost = ({
   onCommentAdded,
   onCommentDeleted,
 }) => {
-    const { getAvatar } = useUser();
+  const { getAvatar } = useUser();
   const userId = parseInt(localStorage.getItem("userId"));
   const [visibleComments, setVisibleComments] = useState({});
+
+  useEffect(() => {
+    const defaults = {};
+    posts.forEach((post) => {
+      if (post.comments.length > 0) {
+        defaults[post.id] = true;
+      }
+    });
+    setVisibleComments((prev) => ({ ...prev, ...defaults }));
+  }, [posts]);
 
   const toggleCommentForm = (postId) => {
     setVisibleComments((prev) => ({
@@ -39,7 +49,7 @@ const UserPost = ({
     );
 
   return (
-     <div className="flex flex-col items-center gap-y-4 w-screen min-h-screen">
+    <div className="flex flex-col items-center gap-y-4 w-screen min-h-screen">
       {posts.length === 0 ? (
         <div className="flex items-center font-bold text-center text-gray-400 h-screen">
           No posts Yet.
@@ -86,7 +96,7 @@ const UserPost = ({
                     )}
                     onToggle={(newLiked) => onLikeToggle(post.id, newLiked)}
                   />
-                  <p>{post.likes.length}</p>
+                  <p contentEditable={false}>{post.likes.length}</p>
                 </div>
 
                 <button
@@ -102,15 +112,21 @@ const UserPost = ({
 
               {visibleComments[post.id] && (
                 <div className="px-4 pb-4">
-                  <div className=" max-h-28 overflow-y-auto bg-1 rounded p-2 ">
+                  <div className=" max-h-40 overflow-y-auto bg-1 rounded p-2 ">
                     {post.comments.map((comment) => (
                       <div
                         key={comment.id}
                         className="p-2 border rounded-xl my-2  text-sm text-gray-300 flex justify-between"
+                        contentEditable={false}
                       >
                         <p>
                           <strong>{comment.author.username}:</strong>{" "}
                           {comment.content}
+                          <h3 className="text-gray-400">
+                            {formatDistanceToNow(new Date(comment.createdAt), {
+                              addSuffix: true,
+                            })}
+                          </h3>
                         </p>
                         {comment.author.id === userId && (
                           <DeleteComment
