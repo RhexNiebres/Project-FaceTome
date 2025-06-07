@@ -36,7 +36,8 @@ exports.getAllPosts = async (req, res) => {
           },
         },
 
-        comments: { include: { author: true } },
+        comments: { include: { author: true }, 
+        orderBy: { createdAt: "desc" } },
         likes: true,
       },
       orderBy: {
@@ -84,7 +85,6 @@ exports.createPost = async (req, res) => {
     res.status(500).json({ error: "Server error while creating post" });
   }
 };
-
 
 exports.deletePost = async (req, res) => {
   try {
