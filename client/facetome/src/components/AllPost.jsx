@@ -8,7 +8,7 @@ import ToggleLikePost from "./ToggleLikePost";
 import DeleteComment from "./DeleteComment";
 import { useUser } from "../provider/UserProvider";
 import { useEffect } from "react";
-const AllPost = ({  
+const AllPost = ({
   posts,
   loading,
   onDelete,
@@ -20,16 +20,15 @@ const AllPost = ({
   const userId = parseInt(localStorage.getItem("userId"));
   const [visibleComments, setVisibleComments] = useState({});
 
-
-useEffect(() => {
-  const defaults = {};
-  posts.forEach((post) => {
-    if (post.comments.length > 0) {
-      defaults[post.id] = true; 
-    }
-  });
-  setVisibleComments((prev) => ({ ...prev, ...defaults }));
-}, [posts]);
+  useEffect(() => {
+    const defaults = {};
+    posts.forEach((post) => {
+      if (post.comments.length > 0) {
+        defaults[post.id] = true;
+      }
+    });
+    setVisibleComments((prev) => ({ ...prev, ...defaults }));
+  }, [posts]);
 
   const toggleCommentForm = (postId) => {
     setVisibleComments((prev) => ({
@@ -84,7 +83,10 @@ useEffect(() => {
             </div>
 
             <div className="bg-2 rounded-b-2xl">
-              <div className="p-10 border-x-4 w-full bg-white text-black rounded-xl">
+              <div
+                className="p-10 border-x-4 w-full bg-white text-black rounded-xl"
+                contentEditable={false}
+              >
                 {post.content}
               </div>
 
@@ -97,7 +99,7 @@ useEffect(() => {
                     )}
                     onToggle={(newLiked) => onLikeToggle(post.id, newLiked)}
                   />
-                  <p>{post.likes.length}</p>
+                  <p contentEditable={false}>{post.likes.length}</p>
                 </div>
 
                 <button
@@ -113,7 +115,7 @@ useEffect(() => {
 
               {visibleComments[post.id] && (
                 <div className="px-4 pb-4">
-                  <div className=" max-h-28 overflow-y-auto bg-1 rounded p-2 ">
+                  <div className=" max-h-40 overflow-y-auto bg-1 rounded p-2 ">
                     {post.comments.map((comment) => (
                       <div
                         key={comment.id}
@@ -122,6 +124,11 @@ useEffect(() => {
                         <p>
                           <strong>{comment.author.username}:</strong>{" "}
                           {comment.content}
+                          <h3 className="text-gray-400">
+                            {formatDistanceToNow(new Date(comment.createdAt), {
+                              addSuffix: true,
+                            })}
+                          </h3>
                         </p>
                         {comment.author.id === userId && (
                           <DeleteComment
