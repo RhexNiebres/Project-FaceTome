@@ -54,7 +54,7 @@ const Home = () => {
         if (post.id === postId) {
           return {
             ...post,
-            comments: [...post.comments, newComment],
+            comments: [newComment, ...post.comments],
           };
         }
         return post;
