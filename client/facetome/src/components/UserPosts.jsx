@@ -79,7 +79,7 @@ const UserPost = ({
                   </h3>
                 </div>
               </div>
-              <h2 className="px-">{post.title}</h2>
+              <h2 className="pl-8">{post.title}</h2>
             </div>
 
             <div className="bg-2 rounded-b-2xl">
@@ -112,7 +112,7 @@ const UserPost = ({
 
               {visibleComments[post.id] && (
                 <div className="px-4 pb-4">
-                  <div className=" max-h-40 overflow-y-auto bg-1 rounded p-2 ">
+                  <div className=" max-h-52 overflow-y-auto bg-1 rounded p-2 ">
                     {post.comments.map((comment) => (
                       <div
                         key={comment.id}
