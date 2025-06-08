@@ -63,7 +63,7 @@ const CreatePost = ({ onPostCreated }) => {
           />
         ) : (
           <>
-            <label htmlFor="title" className="text-l font-bold">
+            <label htmlFor="title" className="text-l font-bold pl-3">
               Title
             </label>
             <input
