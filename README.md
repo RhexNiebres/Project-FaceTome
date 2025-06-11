@@ -1,4 +1,4 @@
-# Social Platform
+# FaceTome a Social Platform 
 
 A full-stack social media application that allows users to post, comment on existing post, like on existing post, and follow other users.
 
