@@ -24,12 +24,12 @@ const UserProfileForm = ({ user, setUser, getAvatar }) => {
   }, [user]);
 
   const handleSaveEdit = async () => {
-    const usernameRegex = /^.{7,}$/;
+    const usernameRegex = /^.{6,8}$/;
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const passwordRegex = /^.{8,}$/;
 
     if (!usernameRegex.test(newUsername)) {
-      setEditError("Username must be at least 7 characters long.");
+      setEditError("Username must be at least 6 characters long.");
       return;
     }
 
@@ -123,7 +123,12 @@ const UserProfileForm = ({ user, setUser, getAvatar }) => {
                 onChange={(e) => setNewUsername(e.target.value)}
                 className="px-4 py-2 rounded-md border border-gray-300"
                 placeholder="New Username"
+                minLength={6}
+                maxLength={8}
               />
+              <p className="text-sm text-gray-400">
+                {newUsername.length}/8 characters
+              </p>
 
               {isPasswordEditable && (
                 <>
