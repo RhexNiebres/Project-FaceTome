@@ -43,12 +43,15 @@ const FindFriendsPage = () => {
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <div className="bg-slate-100">
+    <div className="bg-slate-100 min-h-screen">
       <NavBar />
-      <h1 className="text-4 text-center font-bold p-6 text-xl">Find Friends</h1>
+      <h1 className="text-center font-bold p-6 text-xl sm:text-2xl md:text-3xl">
+        Find Friends
+      </h1>
+
       {users.length > 0 ? (
-        <div className="text-gray-200 p-2 flex flex-col items-center h-screen">
-          <ul>
+        <div className="p-4 flex flex-col items-center">
+          <ul className="w-full max-w-xl space-y-4">
             {users.map((user) => {
               let status = "Not Following";
 
@@ -60,36 +63,38 @@ const FindFriendsPage = () => {
                 status = "Pending";
               } else if (user.hasCTA) {
                 status = "Requested";
-              } else if (user.canFollow) {
+              }else if (user.canFollow) {
                 status = "";
               }
 
               return (
                 <li
-                  className="p-4 bg-1 w-96 rounded font-medium mb-3"
+                  className="p-4 bg-1 w-full rounded font-medium"
                   key={user.id}
                 >
-                  <div className="text-white flex justify-between gap-2">
-                    <div className="flex flex-col">
+                  <div className="text-white flex justify-between items-center gap-4 flex-wrap">
+                    <div>
                       <span className="text-sm text-gray-300">{status}</span>
-                      <span>{user.username}</span>
+                      <div>{user.username}</div>
                     </div>
 
-                    {user.isFollowingEachOther ? null : user.isPendingRequest ? (
-                      <FollowRequestResponse
-                        requestId={user.followRequestId}
-                        userId={user.id}
-                        onStatusChange={handleUserStatus}
-                      />
-                    ) : (
-                      <FollowButton
-                        followingId={user.id}
-                        initiallyFollowed={user.isFollowing}
-                        isPendingRequest={user.isPendingRequest}
-                        hasCTA={user.hasCTA}
-                        onStatusChange={handleUserStatus}
-                      />
-                    )}
+                    <div className="shrink-0">
+                      {user.isFollowingEachOther ? null : user.isPendingRequest ? (
+                        <FollowRequestResponse
+                          requestId={user.followRequestId}
+                          userId={user.id}
+                          onStatusChange={handleUserStatus}
+                        />
+                      ) : (
+                        <FollowButton
+                          followingId={user.id}
+                          initiallyFollowed={user.isFollowing}
+                          isPendingRequest={user.isPendingRequest}
+                          hasCTA={user.hasCTA}
+                          onStatusChange={handleUserStatus}
+                        />
+                      )}
+                    </div>
                   </div>
                 </li>
               );
@@ -97,7 +102,7 @@ const FindFriendsPage = () => {
           </ul>
         </div>
       ) : (
-        <div className="flex justify-center items-center h-screen w-full ">
+        <div className="flex justify-center items-center min-h-[60vh] w-full">
           <p className="font-bold text-gray-400">No Users Yet.</p>
         </div>
       )}
