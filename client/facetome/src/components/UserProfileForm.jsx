@@ -89,7 +89,7 @@ const UserProfileForm = ({ user, setUser, getAvatar }) => {
     newGender === user?.gender;
 
   return (
-    <div>
+    <div className="px-4">
       {error && <p className="text-red-500">{error}</p>}
       {editError && <p className="text-red-500">{editError}</p>}
       {passwordUpdated && (
@@ -97,21 +97,22 @@ const UserProfileForm = ({ user, setUser, getAvatar }) => {
           Password updated successfully!
         </p>
       )}
+
       {user ? (
-        <div className="flex flex-col text-white items-center justify-left mt-20 bg-4 rounded-2xl p-10 mx-auto max-w-lg w-full shadow-2xl">
+        <div className="flex flex-col text-white items-center mt-10 bg-4 rounded-2xl p-6 sm:p-10 mx-auto w-full max-w-xl shadow-2xl">
           <img
             src={user.profilePicture || getAvatar(user.gender)}
             alt="User Avatar"
-            className="w-32 h-32 rounded-full shadow-md mb-4 "
+            className="w-28 h-28 sm:w-32 sm:h-32 rounded-full shadow-md mb-4"
           />
-          <form className="flex flex-col items-center gap-2 bg-2 p-4 rounded-2xl w-full">
-            <h1 className="text-gray-100 text-2xl font-bold p-2 border-b">
+          <form className="flex flex-col items-center gap-4 bg-2 p-4 rounded-2xl w-full">
+            <h1 className="text-gray-100 text-2xl font-bold p-2 border-b w-full text-center">
               {user.username}'s details
             </h1>
             <div className="flex flex-col gap-3 w-full text-2">
               <label
                 htmlFor="newUsername"
-                className="block font-semibold text-gray-200"
+                className="font-semibold text-gray-200"
               >
                 Username
               </label>
@@ -128,7 +129,7 @@ const UserProfileForm = ({ user, setUser, getAvatar }) => {
                 <>
                   <label
                     htmlFor="email"
-                    className="block font-semibold text-gray-200"
+                    className="font-semibold text-gray-200"
                   >
                     Email
                   </label>
@@ -140,13 +141,15 @@ const UserProfileForm = ({ user, setUser, getAvatar }) => {
                     className="px-4 py-2 rounded-md border border-gray-300"
                     placeholder="New Email"
                   />
+
                   <label
                     htmlFor="newPassword"
-                    className="block font-semibold text-gray-200"
+                    className="font-semibold text-gray-200"
                   >
                     Password
                   </label>
                   <input
+                    id="newPassword"
                     type="password"
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
@@ -156,7 +159,7 @@ const UserProfileForm = ({ user, setUser, getAvatar }) => {
 
                   <label
                     htmlFor="confirmNewPassword"
-                    className="block font-semibold text-gray-200"
+                    className="font-semibold text-gray-200"
                   >
                     Confirm Password
                   </label>
@@ -173,7 +176,7 @@ const UserProfileForm = ({ user, setUser, getAvatar }) => {
 
               <label
                 htmlFor="newGender"
-                className="block font-semibold text-gray-300"
+                className="font-semibold text-gray-300"
               >
                 Gender
               </label>
@@ -188,7 +191,8 @@ const UserProfileForm = ({ user, setUser, getAvatar }) => {
                 <option value="NON_SPECIFIED">Prefer not to say</option>
               </select>
             </div>
-            <div className="flex gap-4 mt-4">
+
+            <div className="flex flex-wrap justify-center gap-4 mt-4 w-full">
               <button
                 onClick={(e) => {
                   e.preventDefault();
@@ -198,7 +202,7 @@ const UserProfileForm = ({ user, setUser, getAvatar }) => {
                 className={`px-4 py-2 rounded-md text-white scale-95 transition-transform duration-300 ${
                   isSaveDisabled || loading
                     ? "bg-gray-300 cursor-not-allowed"
-                    : "bg-green-500 hover:scale-110"
+                    : "bg-green-500 hover:scale-105"
                 }`}
               >
                 {loading ? "Saving..." : "Save Changes"}

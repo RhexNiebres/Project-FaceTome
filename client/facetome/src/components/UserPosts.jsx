@@ -56,7 +56,10 @@ const UserPost = ({
         </div>
       ) : (
         posts.map((post) => (
-          <div key={post.id} className="p-4 rounded-xl text-white w-1/2">
+          <div
+            key={post.id}
+            className="p-4 rounded-xl text-white w-full sm:w-4/5 md:w-2/3 lg:w-1/2"
+          >
             <div className="bg-4 rounded-t-2xl text-white px-3 py-2">
               <div className="flex space-x-2 items-center ">
                 <div>
@@ -70,7 +73,6 @@ const UserPost = ({
                   />
                 </div>
                 <div>
-                  {" "}
                   <h3>{post.author.username}</h3>
                   <h3 className="text-gray-400">
                     {formatDistanceToNow(new Date(post.createdAt), {
@@ -112,11 +114,11 @@ const UserPost = ({
 
               {visibleComments[post.id] && (
                 <div className="px-4 pb-4">
-                  <div className=" max-h-52 overflow-y-auto bg-1 rounded p-2 ">
+                  <div className="max-h-52 overflow-y-auto bg-1 rounded p-2">
                     {post.comments.map((comment) => (
                       <div
                         key={comment.id}
-                        className="p-2 border rounded-xl my-2  text-sm text-gray-300 flex justify-between"
+                        className="p-2 border rounded-xl my-2 text-sm text-gray-300 flex justify-between"
                         contentEditable={false}
                       >
                         <p>

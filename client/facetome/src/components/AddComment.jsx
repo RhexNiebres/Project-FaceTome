@@ -18,21 +18,22 @@ const AddComment = ({ postId, onCommentAdded }) => {
     setLoading(false);
   };
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="flex flex-col md:flex-row gap-2 p-2">
       <textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
         placeholder="Write your comment..."
         rows={1}
         required
-        className="p-2 w-full rounded text-black "
+        className="p-2 w-full rounded text-black resize-none md:flex-1"
       ></textarea>
+
       <button
-        className="bg-green-500 p-1 rounded text-4 font-semibold hover:bg-green-400"
+        className="bg-green-500 p-2 rounded text-white font-semibold hover:bg-green-400 disabled:opacity-55"
         type="submit"
         disabled={loading || content === ""}
       >
-        {loading ? "Adding comment" : "Add Comment"}
+        {loading ? "Adding..." : "Add Comment"}
       </button>
     </form>
   );

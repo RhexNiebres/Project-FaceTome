@@ -62,14 +62,14 @@ const Signup = () => {
 
   return (
     <div>
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4">
         <h2 className="text-4xl font-bold text-blue-500 mb-6">FaceTome</h2>
 
         {error && <p className="text-red-500 mb-4">{error}</p>}
 
         <form
           onSubmit={handleSignup}
-          className="bg-white p-6 rounded-lg shadow-lg w-80"
+         className="bg-white p-6 rounded-lg shadow-lg w-[90%] max-w-sm"
         >
           <h2 className="text-2xl font-bold text-gray-900 mb-6">
             Create a new account

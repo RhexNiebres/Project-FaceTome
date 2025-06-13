@@ -40,14 +40,14 @@ const Login = () => {
 
   return (
     <div>
-      <div className="py-15 hide-scrollbar flex flex-col items-center justify-center min-h-screen bg-gray-100">
+      <div className="py-15 hide-scrollbar flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4">
         <h2 className="text-5xl font-bold text-black mb-6">Login</h2>
 
         {error && <p className="text-red-500 mb-4">{error}</p>}
 
         <form
           onSubmit={handleLogin}
-          className="bg-white p-7 rounded-lg shadow-lg w-80"
+          className="bg-white p-7 rounded-lg shadow-lg w-[90%] max-w-sm"
         >
           <div className="mb-4">
             <label

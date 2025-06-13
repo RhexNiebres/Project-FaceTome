@@ -87,7 +87,7 @@ const UserProfilePage = () => {
     <div className="overflow-hidden">
       <NavBar />
       <div className=" min-h-screen min-w-screen bg-gray-100">
-        <div className="flex justify-center">
+        <div className="flex flex-col lg:flex-row justify-center items-start gap-4 px-2">
           <UserProfileForm
             user={user}
             getAvatar={getAvatar}
