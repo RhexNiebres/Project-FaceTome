@@ -15,7 +15,7 @@ const UserProfileForm = ({ user, setUser, getAvatar }) => {
   const [passwordUpdated, setPasswordUpdated] = useState(false);
   const isPasswordEditable = !!user?.password;
   const isGuest = user?.email === "guest@example.com";
-  
+
   useEffect(() => {
     if (user) {
       setNewUsername(user.username || "");
@@ -151,6 +151,7 @@ const UserProfileForm = ({ user, setUser, getAvatar }) => {
                     onChange={(e) => setNewEmail(e.target.value)}
                     className="px-4 py-2 rounded-md border border-gray-300"
                     placeholder="New Email"
+                    disabled={isGuest}
                   />
 
                   <label
