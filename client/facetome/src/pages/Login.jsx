@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { login } from "../services/auth";
 import { useNavigate } from "react-router-dom";
-
+import   GuestLoginButton from "../components/GuestLoginButton"
 const Login = () => {
   const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
@@ -105,7 +105,7 @@ const Login = () => {
               Create new account
             </button>
           </div>
-
+              <  GuestLoginButton/>
           <a
             href={`${import.meta.env.VITE_HOST}/auth/google`}
             className="mt-4 flex items-center justify-center w-full bg-white border hover:bg-gray-200 text-gray font-semibold py-2 rounded-md transition duration-200"
@@ -113,6 +113,7 @@ const Login = () => {
             <img className="w-7 h-7 mr-7" src="/google.png" alt="Google Logo" />
             Sign in with Google
           </a>
+        
         </form>
       </div>
     </div>
