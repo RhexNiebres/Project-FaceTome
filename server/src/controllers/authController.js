@@ -87,3 +87,31 @@ exports.postLogin = async (req, res, next) => {
     next(err);
   }
 };
+
+exports.loginAsGuest = async (req, res, next) => {
+  try {
+    const guestEmail = "guest@example.com";
+
+    const user = await prisma.user.findUnique({
+      where: { email: guestEmail },
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: "Guest account not found." });
+    }
+
+    const token = generateToken(user);
+
+    res.status(200).json({
+      message: "Logged in as guest.",
+      token,
+      userId: user.id,
+      username: user.username,
+      email: user.email,
+      gender: user.gender,
+    });
+  } catch (err) {
+    console.error("Guest login failed", err);
+    res.status(500).json({ message: "Guest login failed." });
+  }
+};
