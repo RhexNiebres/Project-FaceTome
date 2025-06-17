@@ -37,6 +37,26 @@ export const login = async (credentials) => {
   return data;
 };
 
+export const loginAsGuest = async () => {
+  const response = await fetch(import.meta.env.VITE_HOST + "/guest", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || "Guest login failed");
+  }
+
+  const data = await response.json();
+
+  localStorage.setItem("token", data.token);
+  localStorage.setItem("userId", data.userId);
+  localStorage.setItem("username", data.username);
+ 
+  return data;
+};
+
 export const getToken = () => localStorage.getItem("token");
 
 export const getUserId = () => localStorage.getItem("userId");

@@ -5,6 +5,7 @@ const authController = require("../controllers/authController");
 
 router.post("/sign-up", authController.postSignUp);
 router.post("/log-in", authController.postLogin);
+router.post("/guest", authController.loginAsGuest);
 
 router.get(
   "/auth/google",
