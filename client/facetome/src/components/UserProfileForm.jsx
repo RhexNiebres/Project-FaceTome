@@ -14,7 +14,8 @@ const UserProfileForm = ({ user, setUser, getAvatar }) => {
   const [loading, setLoading] = useState(false);
   const [passwordUpdated, setPasswordUpdated] = useState(false);
   const isPasswordEditable = !!user?.password;
-
+  const isGuest = user?.email === "guest@example.com";
+  
   useEffect(() => {
     if (user) {
       setNewUsername(user.username || "");
@@ -48,6 +49,10 @@ const UserProfileForm = ({ user, setUser, getAvatar }) => {
       return;
     }
 
+    if (isGuest) {
+      setEditError("Guest account cannot be edited.");
+      return;
+    }
     setLoading(true);
 
     try {
@@ -125,6 +130,7 @@ const UserProfileForm = ({ user, setUser, getAvatar }) => {
                 placeholder="New Username"
                 minLength={6}
                 maxLength={8}
+                disabled={isGuest}
               />
               <p className="text-sm text-gray-400">
                 {newUsername.length}/8 characters
@@ -160,6 +166,7 @@ const UserProfileForm = ({ user, setUser, getAvatar }) => {
                     onChange={(e) => setNewPassword(e.target.value)}
                     className="px-4 py-2 rounded-md border border-gray-300"
                     placeholder="New Password"
+                    disabled={isGuest}
                   />
 
                   <label
@@ -175,6 +182,7 @@ const UserProfileForm = ({ user, setUser, getAvatar }) => {
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     className="px-4 py-2 rounded-md border border-gray-300"
                     placeholder="Confirm New Password"
+                    disabled={isGuest}
                   />
                 </>
               )}
@@ -189,6 +197,7 @@ const UserProfileForm = ({ user, setUser, getAvatar }) => {
                 id="newGender"
                 value={newGender}
                 onChange={(e) => setNewGender(e.target.value)}
+                disabled={isGuest}
                 className="px-4 py-2 rounded-md border border-gray-300"
               >
                 <option value="MALE">Male</option>
