@@ -21,7 +21,11 @@ const GuestLoginButton = () => {
 
   return (
     <div className="fixed top-4 left-4 z-50 ">
-      <div className="w-60 space-y-2">
+      <div className="w-60 space-y-2 border border-slate-200 p-2 rounded shadow-2xl ">
+        <p className=" text-4 font-bold text-center  w-full text-sm rounded">
+          Disclaimer: Viewer login is for demo purposes only — no signup
+          required, and no data will be saved.
+        </p>
         <button
           onClick={handleGuestLogin}
           disabled={loading}
@@ -31,9 +35,6 @@ const GuestLoginButton = () => {
         >
           {loading ? "Logging in..." : "Login as Viewer"}
         </button>
-        <p className=" text-4 font-bold text-center  w-full text-sm rounded">
-          This button is for Instant demo login — no signup needed..
-        </p>
       </div>
     </div>
   );
