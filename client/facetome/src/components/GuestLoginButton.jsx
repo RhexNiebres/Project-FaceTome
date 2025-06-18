@@ -20,16 +20,21 @@ const GuestLoginButton = () => {
   };
 
   return (
-    <div className="p-2">
-      <button
-        onClick={handleGuestLogin}
-        disabled={loading}
-        className={`bg-4 text-white  w-full p-2 rounded hover:bg-gray-700 transition ${
-          loading ? "opacity-50 cursor-not-allowed" : ""
-        }`}
-      >
-        {loading ? "Logging in..." : "Login as Viewer"}
-      </button>
+    <div className="fixed top-4 left-4 z-50 ">
+      <div className="w-60 space-y-2">
+        <button
+          onClick={handleGuestLogin}
+          disabled={loading}
+          className={`	bg-emerald-500 text-white w-full p-2 rounded hover:bg-emerald-600 transition ${
+            loading ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+        >
+          {loading ? "Logging in..." : "Login as Viewer"}
+        </button>
+        <p className=" text-4 font-bold text-center  w-full text-sm rounded">
+          This button is for Instant demo login — no signup needed..
+        </p>
+      </div>
     </div>
   );
 };
