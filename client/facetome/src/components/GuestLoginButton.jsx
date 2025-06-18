@@ -20,16 +20,22 @@ const GuestLoginButton = () => {
   };
 
   return (
-    <div className="p-2">
-      <button
-        onClick={handleGuestLogin}
-        disabled={loading}
-        className={`bg-4 text-white  w-full p-2 rounded hover:bg-gray-700 transition ${
-          loading ? "opacity-50 cursor-not-allowed" : ""
-        }`}
-      >
-        {loading ? "Logging in..." : "Login as Viewer"}
-      </button>
+    <div className="fixed top-4 left-4 z-50 ">
+      <div className="w-60 space-y-2 border border-slate-200 p-2 rounded shadow-2xl ">
+        <p className=" text-4 font-bold text-center  w-full text-sm rounded">
+          Disclaimer: Viewer login is for demo purposes only — no signup
+          required, and no data will be saved.
+        </p>
+        <button
+          onClick={handleGuestLogin}
+          disabled={loading}
+          className={`	bg-emerald-500 text-white w-full p-2 rounded hover:bg-emerald-600 transition ${
+            loading ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+        >
+          {loading ? "Logging in..." : "Login as Viewer"}
+        </button>
+      </div>
     </div>
   );
 };
