@@ -12,7 +12,11 @@ This is a full-stack social platform . It allows users to create content, intera
 - Users can comment on posts  
 - Users can like posts  
 - Users can follow other users  
-- Users can view posts from people they follow  
+- Users can view posts from people they follow
+  
+# Viewer Login 
+
+- Users can login with a viewer account for demo purposes
 
 ## Tech Stack
 
