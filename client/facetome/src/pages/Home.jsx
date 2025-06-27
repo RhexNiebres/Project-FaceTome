@@ -84,7 +84,7 @@ const Home = () => {
       <div className="flex justify-center">
         <CreatePost onPostCreated={handlePostCreated} />
       </div>
-      <div className="flex items-center p-16">
+      <div className="flex items-center p-8">
         <AllPost
           posts={posts}
           loading={loading}
