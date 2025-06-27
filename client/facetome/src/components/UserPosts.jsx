@@ -49,7 +49,7 @@ const UserPost = ({
     );
 
   return (
-    <div className="flex flex-col items-center gap-y-4 w-screen min-h-screen">
+    <div className="flex flex-col items-center gap-y-4 w-full min-h-screen">
       {posts.length === 0 ? (
         <div className="flex items-center font-bold text-center text-gray-400 h-screen">
           No posts Yet.

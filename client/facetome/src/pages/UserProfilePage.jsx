@@ -86,7 +86,7 @@ const UserProfilePage = () => {
   return (
     <div className="overflow-hidden">
       <NavBar />
-      <div className=" min-h-screen min-w-screen bg-gray-100">
+      <div className=" min-h-screen min-w-full bg-gray-100">
         <div className="flex flex-col lg:flex-row justify-center items-start gap-4 px-2">
           <UserProfileForm
             user={user}
