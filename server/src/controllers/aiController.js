@@ -14,7 +14,7 @@ exports.generatePost = async (req, res) => {
       messages: [
         {
           role: "user",
-          content: `Create a post based on this prompt: "${prompt}". Respond ONLY in JSON with this format: { "title": "title", "content": "post content" }`,
+          content: `Create a post based on this prompt: "${prompt}". Respond ONLY with valid JSON (no preface, no explanation). Format: { "title": "title", "content": "content" }`
         },
       ],
       model: "llama3-8b-8192",
