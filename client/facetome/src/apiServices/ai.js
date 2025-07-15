@@ -1,6 +1,6 @@
-export const generatePost = async ({prompt}) => {
+export const generatePost = async (prompt) => {
   try {
-    const response = await fetch(import.meta.env.VITE_HOST + `api/ai/posts`, {
+    const response = await fetch(import.meta.env.VITE_HOST + `/api/ai/posts`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
