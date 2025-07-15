@@ -42,7 +42,7 @@ app.use("/users", usersRoutes);
 app.use("/follows", followRoutes);
 app.use("/posts", postRoutes);
 app.use("/comments", commentRoutes);
-app.use("api/ai", aiRoutes)
+app.use("/api/ai", aiRoutes)
 
 app.get("/ping", (req, res) => {
   res.status(200).send("OK");
