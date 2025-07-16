@@ -15,7 +15,7 @@ export const generatePost = async (prompt) => {
     }
 
     const data = await response.json();
-    return { success: true, generatedpost: data };
+    return { success: true, title: data.title, content: data.content };
   } catch (error) {
     return { success: false, error: error.message };
   }
