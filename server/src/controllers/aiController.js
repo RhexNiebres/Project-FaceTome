@@ -12,6 +12,10 @@ exports.generatePost = async (req, res) => {
 
     const response = await groq.chat.completions.create({
       messages: [
+         {
+        role: "system",
+        content: `You are a helpful assistant that only Respond ONLY with valid JSON (no preface, no explanation). Format: { "title": "title", "content": "content" }.`,
+      },
         {
           role: "user",
           content: `Create a post based on this prompt: "${prompt}". Respond ONLY with valid JSON (no preface, no explanation). Format: { "title": "title", "content": "content" }`
