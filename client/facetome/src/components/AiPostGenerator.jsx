@@ -2,8 +2,9 @@ import { useState } from "react";
 import { generatePost } from "../apiServices/ai";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
+import CreatePost from "./CreatePost";
 
-const AiPostGenerator = () => {
+const AiPostGenerator = ({ onPostCreated }) => {
   const [prompt, setPrompt] = useState("");
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
@@ -11,10 +12,16 @@ const AiPostGenerator = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setError(null);
     setLoading(true);
     try {
       const reply = await generatePost(prompt);
-      setResponse(reply);
+      if (reply?.error) {
+        setError(reply.error);
+        setResponse(null);
+      } else {
+        setResponse(reply);
+      }
     } catch (error) {
       setError(error.message || "something went wrong");
     }
@@ -22,13 +29,16 @@ const AiPostGenerator = () => {
   };
 
   return (
-    <div className="bg-2 p-4 m-4 text-white rounded-xl w-1/2 shadow-xl">
-      <h1 className="text-white font-extrabold text-2xl text-center mb-4">Generate a post using Tommy, your friendly AI.💡</h1>
-      <form
-        className="w-full flex flex-col text-2"
-        onSubmit={handleSubmit}
-      >
-        <input
+    <div className="bg-2 p-4 text-white rounded-xl w-full shadow-xl">
+      <h1 className="text-white font-extrabold text-2xl text-center mb-4">
+        Generate a post using Tommy, your friendly AI.💡
+      </h1>
+      <div className="p-4">
+        <p className="font-bold">Step 1:</p>
+        <p>Type your idea and let Tommy bring it to life.</p>
+      </div>
+      <form className="w-full flex flex-col text-2" onSubmit={handleSubmit}>
+        <textarea
           className="w-full p-2 rounded-xl"
           type="text"
           value={prompt}
@@ -50,17 +60,19 @@ const AiPostGenerator = () => {
                 />
               </div>
             ) : (
-              "Generate Ai Post"
+              "Generate Post"
             )}
           </button>
         </div>
       </form>
-      {response && (
-        <div className="flex flex-col border gap-y-3 p-2">
-          <p>Title: {response.title}</p>
-          <p>Content: {response.content}</p>
-        </div>
-      )}
+      <div className="p-4">
+        <p className="font-bold ">Step 2:</p>
+        <p>
+          Review and edit the generated post, then click{" "}
+          <strong>Create Post</strong>.
+        </p>
+      </div>
+      <CreatePost receiveData={response} onPostCreated={onPostCreated} />
       {error && <p className="text-red-500">{error}</p>}{" "}
     </div>
   );
