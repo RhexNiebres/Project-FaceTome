@@ -26,12 +26,34 @@ const CreatePost = ({ onPostCreated, receiveData, setShowForm }) => {
     setShowForm(false); 
   };
 
-  useEffect(() => {
-    if (receiveData?.title || receiveData?.content) {
-      setTitle(receiveData.title || "");
-      setContent(receiveData.content || "");
-    }
-  }, [receiveData]);
+useEffect(() => {
+  if (receiveData?.title || receiveData?.content) {
+    let titleIndex = 0;
+    let contentIndex = 0;
+
+    const typeSpeed = 30; // ms per character,
+
+    const typeTitle = () => {
+      if (receiveData?.title && titleIndex <= receiveData.title.length) {
+        setTitle(receiveData.title.slice(0, titleIndex));
+        titleIndex++;
+        setTimeout(typeTitle, typeSpeed);
+      }
+    };
+
+    const typeContent = () => {
+      if (receiveData?.content && contentIndex <= receiveData.content.length) {
+        setContent(receiveData.content.slice(0, contentIndex));
+        contentIndex++;
+        setTimeout(typeContent, typeSpeed);
+      }
+    };
+
+    typeTitle();
+    typeContent();
+  }
+}, [receiveData]);
+
   
   return (
     <div className="bg-2 p-4  text-white rounded-xl w-full shadow-xl">
