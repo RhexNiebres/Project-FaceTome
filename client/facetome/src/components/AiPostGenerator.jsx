@@ -43,7 +43,7 @@ const AiPostGenerator = ({ onPostCreated, setShowForm }) => {
           type="text"
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
-          placeholder="Type your idea and let the Tommy Bring it to life..."
+          placeholder="Type your idea here..."
         />
         <div className="flex justify-end">
           <button
