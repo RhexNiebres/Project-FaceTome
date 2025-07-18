@@ -16,7 +16,7 @@
   "type": "commonjs",
   "dependencies": {
     "@prisma/client": "^6.5.0",
-    "bad-words": "^4.0.0",
+    "bad-words": "^3.0.4",
     "bcryptjs": "^3.0.2",
     "concurrently": "^9.1.2",
     "cors": "^2.8.5",
