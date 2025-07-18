@@ -28,54 +28,69 @@ const AiPostGenerator = ({ onPostCreated, setShowForm }) => {
     setLoading(false);
   };
 
-  return (
-    <div className="bg-2 p-4 text-white rounded-xl w-full shadow-xl">
-      <h1 className="text-white font-extrabold text-2xl text-center mb-4">
-        Generate a post using Tommy, your friendly AI.💡
-      </h1>
-      <div className="p-4">
-        <p className="font-bold">Step 1:</p>
-        <p>Type your idea and let Tommy bring it to life.</p>
-      </div>
-      <form className="w-full flex flex-col text-2" onSubmit={handleSubmit}>
-        <textarea
-          className="w-full p-2 rounded-xl"
-          type="text"
-          value={prompt}
-          onChange={(e) => setPrompt(e.target.value)}
-          placeholder="Type your idea here..."
-        />
-        <div className="flex justify-end">
-          <button
-            type="submit"
-            disabled={loading}
-            className="p-2 m-2 bg-gray-200 text-2 hover:bg-1 hover:text-gray-100 rounded-xl transition duration-300 ease-in-out"
-          >
-            {loading ? (
-              <div className="flex justify-center w-20">
-                <FontAwesomeIcon
-                  icon={faCircleNotch}
-                  spin
-                  className="text-blue-500 text-2xl"
-                />
-              </div>
-            ) : (
-              "Generate Post"
-            )}
-          </button>
-        </div>
-      </form>
-      <div className="p-4">
-        <p className="font-bold ">Step 2:</p>
-        <p>
-          Review and edit the generated post, then click{" "}
-          <strong>Create Post</strong>.
-        </p>
-      </div>
-      <CreatePost receiveData={response} onPostCreated={onPostCreated} setShowForm={setShowForm}/>
-      {error && <p className="text-red-500">{error}</p>}{" "}
+return (
+  <div className="bg-2 p-4 sm:p-6 md:p-10 text-white rounded-xl w-full max-w-3xl mx-auto shadow-xl">
+    <h1 className="text-white font-extrabold text-xl sm:text-2xl md:text-3xl text-center mb-4 leading-snug">
+      Generate a post using{" "}
+      <span className="bg-gradient-to-r from-blue-400 to-blue-500 bg-clip-text text-transparent">
+        Tommy
+      </span>
+      , your friendly AI.💡
+    </h1>
+
+    <div className="p-2 sm:p-4">
+      <p className="font-bold text-base sm:text-lg">Step 1:</p>
+      <p className="text-sm sm:text-base">
+        Type your idea and let Tommy bring it to life.
+      </p>
     </div>
-  );
+
+    <form className="w-full flex flex-col gap-2 text-2" onSubmit={handleSubmit}>
+      <textarea
+        className="w-full p-3 rounded-xl text-black min-h-[120px] resize-none"
+        value={prompt}
+        onChange={(e) => setPrompt(e.target.value)}
+        placeholder="Type your idea here..."
+      />
+      <div className="flex justify-end">
+        <button
+          type="submit"
+          disabled={loading}
+          className="p-2 px-4 m-2 bg-gray-200 text-black hover:bg-1 hover:text-white rounded-xl transition duration-300 ease-in-out"
+        >
+          {loading ? (
+            <div className="flex justify-center w-20">
+              <FontAwesomeIcon
+                icon={faCircleNotch}
+                spin
+                className="text-blue-500 text-2xl"
+              />
+            </div>
+          ) : (
+            "Generate Post"
+          )}
+        </button>
+      </div>
+    </form>
+
+    <div className="p-2 sm:p-4">
+      <p className="font-bold text-base sm:text-lg">Step 2:</p>
+      <p className="text-sm sm:text-base">
+        Review and edit the generated post, then click{" "}
+        <strong>Create Post</strong>.
+      </p>
+    </div>
+
+    <CreatePost
+      receiveData={response}
+      onPostCreated={onPostCreated}
+      setShowForm={setShowForm}
+    />
+
+    {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+  </div>
+);
+
 };
 
 export default AiPostGenerator;

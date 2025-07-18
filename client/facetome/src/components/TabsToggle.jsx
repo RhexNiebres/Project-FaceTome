@@ -27,25 +27,25 @@ const TabsToggle = ({ onPostCreated }) => {
   }, [showForm]);
 
 
-  return (
-    <div className="flex flex-col text-white w-full p-20">
+ return (
+    <div className="flex flex-col items-center text-white w-full px-4 sm:px-6 md:px-12 lg:px-20 py-10 sm:py-16">
       <div
-        className="bg-white border-black p-4 rounded-2xl shadow-xl"
+        className="bg-white border border-black p-4 sm:p-6 rounded-2xl shadow-xl w-full max-w-3xl"
         ref={formRef}
       >
         {!showForm ? (
           <div
             onClick={handleExpandForm}
-            className="cursor-pointer bg-gray-100 text-black p-2 rounded-xl border hover:bg-gray-200 transition"
+            className="cursor-pointer bg-gray-100 text-black p-3 sm:p-4 rounded-xl border hover:bg-gray-200 transition text-center text-sm sm:text-base"
           >
             What's on your mind?
           </div>
         ) : (
           <>
-            <div className="pb-2">
+            <div className="flex flex-wrap gap-2 pb-4">
               <button
                 onClick={() => setActiveTab("manual")}
-                className={`px-4 py-2 ml-3 rounded-xl ${
+                className={`px-4 py-2 rounded-xl text-sm sm:text-base ${
                   activeTab === "manual"
                     ? "bg-2 text-white font-bold"
                     : "text-4 border hover:bg-1 hover:text-white transition duration-200"
@@ -55,7 +55,7 @@ const TabsToggle = ({ onPostCreated }) => {
               </button>
               <button
                 onClick={() => setActiveTab("AI")}
-                className={`px-4 py-2 ml-1 rounded-xl ${
+                className={`px-4 py-2 rounded-xl text-sm sm:text-base ${
                   activeTab === "AI"
                     ? "bg-2 text-white font-bold"
                     : "text-4 border hover:bg-1 hover:text-white transition duration-200"
@@ -65,11 +65,19 @@ const TabsToggle = ({ onPostCreated }) => {
               </button>
             </div>
 
-            {activeTab === "manual" ? (
-              <CreatePost onPostCreated={onPostCreated} setShowForm={setShowForm}/>
-            ) : (
-              <AiPostGenerator onPostCreated={onPostCreated} setShowForm={setShowForm}/>
-            )}
+            <div className="w-full">
+              {activeTab === "manual" ? (
+                <CreatePost
+                  onPostCreated={onPostCreated}
+                  setShowForm={setShowForm}
+                />
+              ) : (
+                <AiPostGenerator
+                  onPostCreated={onPostCreated}
+                  setShowForm={setShowForm}
+                />
+              )}
+            </div>
           </>
         )}
       </div>
