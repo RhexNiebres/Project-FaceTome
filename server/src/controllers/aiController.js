@@ -45,7 +45,7 @@ exports.generatePost = async (req, res) => {
     }
     if (filter.isProfane(parsed.title) || filter.isProfane(parsed.content)) {
       return res.status(400).json({
-        error: "AI generated inappropriate content. Please try again with a cleaner prompt.",
+        error: "Inappropriate content. Please try again with a cleaner input.",
       });
     }
     res.status(201).json(parsed);
