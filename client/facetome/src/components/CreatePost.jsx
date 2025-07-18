@@ -3,7 +3,7 @@ import { createPost } from "../apiServices/posts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 
-const CreatePost = ({ onPostCreated, receiveData }) => {
+const CreatePost = ({ onPostCreated, receiveData, setShowForm }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
@@ -23,6 +23,7 @@ const CreatePost = ({ onPostCreated, receiveData }) => {
       alert(result.error || "Failed to create post");
     }
     setLoading(false);
+    setShowForm(false); 
   };
 
   useEffect(() => {

@@ -38,11 +38,10 @@ const TabsToggle = ({ onPostCreated }) => {
             onClick={handleExpandForm}
             className="cursor-pointer bg-gray-100 text-black p-2 rounded-xl border hover:bg-gray-200 transition"
           >
-            What’s on your mind?
+            What's on your mind?
           </div>
         ) : (
           <>
-            {/* Tabs */}
             <div className="pb-2">
               <button
                 onClick={() => setActiveTab("manual")}
@@ -66,11 +65,10 @@ const TabsToggle = ({ onPostCreated }) => {
               </button>
             </div>
 
-            {/* Form Content */}
             {activeTab === "manual" ? (
-              <CreatePost onPostCreated={onPostCreated} />
+              <CreatePost onPostCreated={onPostCreated} setShowForm={setShowForm}/>
             ) : (
-              <AiPostGenerator onPostCreated={onPostCreated} />
+              <AiPostGenerator onPostCreated={onPostCreated} setShowForm={setShowForm}/>
             )}
           </>
         )}

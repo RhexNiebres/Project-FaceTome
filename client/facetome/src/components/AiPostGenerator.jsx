@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import CreatePost from "./CreatePost";
 
-const AiPostGenerator = ({ onPostCreated }) => {
+const AiPostGenerator = ({ onPostCreated, setShowForm }) => {
   const [prompt, setPrompt] = useState("");
   const [response, setResponse] = useState(null);
   const [error, setError] = useState(null);
@@ -72,7 +72,7 @@ const AiPostGenerator = ({ onPostCreated }) => {
           <strong>Create Post</strong>.
         </p>
       </div>
-      <CreatePost receiveData={response} onPostCreated={onPostCreated} />
+      <CreatePost receiveData={response} onPostCreated={onPostCreated} setShowForm={setShowForm}/>
       {error && <p className="text-red-500">{error}</p>}{" "}
     </div>
   );
