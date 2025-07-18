@@ -1,5 +1,5 @@
 const Groq = require("groq-sdk");
-const Filter = require('bad-words'); 
+const Filter = require("bad-words");
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 const filter = new Filter();
 
@@ -11,8 +11,8 @@ exports.generatePost = async (req, res) => {
       return res.status(400).json({ error: "Input is required" });
     }
 
-    if(filter.isProfane(prompt)){
-       return res.status(400).json({ error: "Please Avoid vulgar words" });
+    if (filter.isProfane(prompt)) {
+      return res.status(400).json({ error: "Please Avoid vulgar words" });
     }
 
     const response = await groq.chat.completions.create({
@@ -43,14 +43,16 @@ exports.generatePost = async (req, res) => {
         .status(500)
         .json({ error: "Something went wrong please try again" });
     }
+
     if (filter.isProfane(parsed.title) || filter.isProfane(parsed.content)) {
       return res.status(400).json({
         error: "Inappropriate content. Please try again with a cleaner input.",
       });
     }
+
     res.status(201).json(parsed);
   } catch (error) {
     console.error("AI Error:", error);
-    res.status(500).json({ error: "Failed to generate post with AI" });
+    res.status(500).json({ error: "Failed to generate post please try again" });
   }
 };
