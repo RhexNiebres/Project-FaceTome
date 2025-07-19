@@ -30,13 +30,13 @@ const TabsToggle = ({ onPostCreated }) => {
  return (
     <div className="flex flex-col items-center text-white w-full px-4 sm:px-6 md:px-12 lg:px-20 py-10 sm:py-16">
       <div
-        className="bg-white border border-black p-4 sm:p-6 rounded-2xl shadow-xl w-full max-w-3xl"
+        className="bg-white border  p-4 sm:p-4 rounded-2xl shadow-xl w-full max-w-3xl"
         ref={formRef}
       >
         {!showForm ? (
           <div
             onClick={handleExpandForm}
-            className="cursor-pointer bg-gray-100 text-black p-3 sm:p-4 rounded-xl border hover:bg-gray-200 transition text-center text-sm sm:text-base"
+            className="cursor-pointer bg-gray-100 text-black p-3 sm:p-2 rounded-xl border hover:bg-gray-200 transition text-center text-sm sm:text-base"
           >
             What's on your mind?
           </div>
