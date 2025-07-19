@@ -3,7 +3,7 @@ import { createPost } from "../apiServices/posts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 
-const CreatePost = ({ onPostCreated, receiveData, setShowForm }) => {
+const CreatePost = ({ onPostCreated, receiveData, setShowForm, setIsTyping }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(false);
@@ -27,11 +27,13 @@ const CreatePost = ({ onPostCreated, receiveData, setShowForm }) => {
   };
 
 useEffect(() => {
+
   if (receiveData?.title || receiveData?.content) {
     let titleIndex = 0;
     let contentIndex = 0;
-
     const typeSpeed = 30; // ms per character,
+
+    setIsTyping(true);
 
     const typeTitle = () => {
       if (receiveData?.title && titleIndex <= receiveData.title.length) {
@@ -46,7 +48,9 @@ useEffect(() => {
         setContent(receiveData.content.slice(0, contentIndex));
         contentIndex++;
         setTimeout(typeContent, typeSpeed);
-      }
+      } else{
+        setIsTyping(false); 
+      }   
     };
 
     typeTitle();
