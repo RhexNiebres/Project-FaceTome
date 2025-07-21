@@ -84,6 +84,7 @@ const AiPostGenerator = ({ onPostCreated, setShowForm }) => {
           </button>
         </div>
       </form>
+      {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
 
       <div className="p-2 sm:p-4">
         <p className="font-bold text-base sm:text-lg">Step 2:</p>
@@ -99,8 +100,6 @@ const AiPostGenerator = ({ onPostCreated, setShowForm }) => {
         setShowForm={setShowForm}
         setIsTyping={setIsTyping}
       />
-
-      {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
     </div>
   );
 };
