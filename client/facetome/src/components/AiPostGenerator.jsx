@@ -61,7 +61,12 @@ const AiPostGenerator = ({ onPostCreated, setShowForm }) => {
             type="submit"
             title={isTyping ? "Wait for Tommy to finish typing!" : ""}
             disabled={loading || isTyping}
-            className="p-2 px-4 m-2 bg-gray-200 text-black hover:bg-1 hover:text-white rounded-xl transition duration-300 ease-in-out"
+            className={`p-2 px-4 m-2 rounded-xl transition duration-300 ease-in-out 
+    ${
+      loading || isTyping
+        ? "bg-blue-500 text-white animate-pulse"
+        : "bg-gray-200 text-black hover:bg-1 hover:text-white"
+    }`}
           >
             {loading ? (
               <div className="flex justify-center w-20">
