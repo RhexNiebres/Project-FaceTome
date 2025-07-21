@@ -16,11 +16,13 @@
   "type": "commonjs",
   "dependencies": {
     "@prisma/client": "^6.5.0",
+    "bad-words": "^3.0.4",
     "bcryptjs": "^3.0.2",
     "concurrently": "^9.1.2",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "groq-sdk": "^0.27.0",
     "jsonwebtoken": "^9.0.2",
     "passport": "^0.7.0",
     "passport-github2": "^0.1.12",

@@ -13,6 +13,7 @@ const usersRoutes = require("./routes/usersRoute");
 const followRoutes = require("./routes/followRoute");
 const postRoutes = require("./routes/postRoute");
 const commentRoutes = require("./routes/commentsRoute");
+const aiRoutes = require("./routes/aiRoute")
 const cors = require("cors");
 
 const allowedOrigins = [
@@ -41,6 +42,7 @@ app.use("/users", usersRoutes);
 app.use("/follows", followRoutes);
 app.use("/posts", postRoutes);
 app.use("/comments", commentRoutes);
+app.use("/api/ai", aiRoutes)
 
 app.get("/ping", (req, res) => {
   res.status(200).send("OK");

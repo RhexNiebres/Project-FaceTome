@@ -4,8 +4,6 @@ const { PrismaClient } = require("../generated/prisma");
 const prisma = new PrismaClient();
 const { generateToken } = require("../middlewares/verifyToken");
 
-console.log("the GOOGLE_CALLBACK_URL is:", process.env.GOOGLE_CALLBACK_URL);
-
 passport.use(
   new GoogleStrategy(
     {

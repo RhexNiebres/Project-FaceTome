@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { getAllPosts } from "../apiServices/posts";
 import AllPost from "../components/AllPost";
-import CreatePost from "../components/CreatePost";
 import NavBar from "../components/NavBar";
+import TabsToggle from "../components/TabsToggle";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
@@ -80,10 +80,7 @@ const Home = () => {
   return (
     <div className="flex flex-col bg-gray-100 justify-center ">
       <NavBar />
-
-      <div className="flex justify-center">
-        <CreatePost onPostCreated={handlePostCreated} />
-      </div>
+      <TabsToggle onPostCreated={handlePostCreated}/>
       <div className="flex items-center p-8">
         <AllPost
           posts={posts}
