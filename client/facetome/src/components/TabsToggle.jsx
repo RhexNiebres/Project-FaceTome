@@ -49,7 +49,7 @@ const TabsToggle = ({ onPostCreated }) => {
                 className={`px-4 py-2 rounded-xl text-sm sm:text-base ${
                   activeTab === "manual"
                     ? "bg-2 text-white font-bold"
-                    : "text-4 border hover:bg-1 hover:text-white transition duration-200"
+                    : "text-4 border hover:bg-1 hover:text-white transition duration-200 hover:scale-110"
                 }`}
               >
                 Add Post
@@ -59,10 +59,10 @@ const TabsToggle = ({ onPostCreated }) => {
   className={`relative px-4 py-2 rounded-xl text-sm sm:text-base font-semibold overflow-hidden transition-all duration-500
     ${
       activeTab === "AI"
-        ? "bg-gradient-to-r from-indigo-500 via-purple-500 to-blue-500 text-white font-bold"
+        ? "bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 text-white font-bold"
         : `border text-white bg-[length:200%] bg-[100%]
             bg-gradient-to-l from-blue-500 via-purple-500 to-indigo-500 
-            hover:bg-[0%] hover:text-white`
+            hover:bg-[0%] hover:text-white hover:scale-110`
     }`}
 >
   <span className="relative z-10">AI Generate Post</span>
