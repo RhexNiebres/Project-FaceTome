@@ -93,16 +93,17 @@ useEffect(() => {
           required
           className="p-2 my-2 rounded-xl w-full text-4 bg-gray-100"
         />
-        <div className="flex space-x-80  items-center">
-          <label htmlFor="content" className="text-l font-bold pl-3">
-            Content
-          </label>
-          {setStep && (
-            <div className=" text-sm font-medium text-white italic">
-              Review and edit the generated post.
-            </div>
-          )}
-        </div>
+       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-4">
+  <label htmlFor="content" className="text-l font-bold pl-1 sm:pl-3">
+    Content
+  </label>
+  {setStep && (
+    <div className="text-sm font-medium text-white italic text-right sm:text-left">
+      Review and edit the generated post.
+    </div>
+  )}
+</div>
+
 
         <textarea
          ref={contentRef} 
