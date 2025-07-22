@@ -12,7 +12,7 @@ exports.generatePost = async (req, res) => {
     }
 
     if (filter.isProfane(prompt)) {
-      return res.status(400).json({ error: "Please Avoid vulgar words" });
+      return res.status(400).json({ error: "Please Avoid vulgar words. Please try again" });
     }
 
     const response = await groq.chat.completions.create({
