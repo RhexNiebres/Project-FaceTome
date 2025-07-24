@@ -63,7 +63,7 @@ const Login = () => {
               onChange={(e) =>
                 setCredentials({ ...credentials, email: e.target.value })
               }
-              className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 invalid:text-red-500 invalid:border-red-500"
             />
           </div>
 
@@ -81,7 +81,7 @@ const Login = () => {
               onChange={(e) =>
                 setCredentials({ ...credentials, password: e.target.value })
               }
-              className="w-full p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
             />
           </div>
 

@@ -89,7 +89,7 @@ const Signup = () => {
             onChange={(e) =>
               setCredentials({ ...credentials, username: e.target.value })
             }
-            className="w-full p-3 border rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-3 border rounded-md mb-4 focus:outline-none focus:ring-1 focus:ring-blue-500"
           />
           <label htmlFor="email" className="block font-semibold text-gray-700">
             Email
@@ -102,7 +102,7 @@ const Signup = () => {
             onChange={(e) =>
               setCredentials({ ...credentials, email: e.target.value })
             }
-            className="w-full p-3 border rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-3 border rounded-md mb-4 focus:outline-none focus:ring-1 focus:ring-blue-500 invalid:text-red-500 invalid:border-red-500"
           />
           <label
             htmlFor="password"
@@ -118,7 +118,7 @@ const Signup = () => {
             onChange={(e) =>
               setCredentials({ ...credentials, password: e.target.value })
             }
-            className="w-full p-3 border rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-3 border rounded-md mb-4 focus:outline-none focus:ring-1 focus:ring-blue-500"
           />
           <label
             htmlFor="confirmPassword"
@@ -137,7 +137,7 @@ const Signup = () => {
                 confirmPassword: e.target.value,
               })
             }
-            className="w-full p-3 border rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full p-3 border rounded-md mb-4 focus:outline-none focus:ring-1 focus:ring-blue-500"
           />
           <label htmlFor="gender" className="block font-semibold text-gray-700">
             Gender
