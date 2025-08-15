@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createComment } from "../apiServices/comments";
+import { createComment } from "../apiRequests/comments";
 
 const AddComment = ({ postId, onCommentAdded }) => {
   const [content, setContent] = useState("");
@@ -18,7 +18,10 @@ const AddComment = ({ postId, onCommentAdded }) => {
     setLoading(false);
   };
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col md:flex-row gap-2 p-2">
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col md:flex-row gap-2 p-2"
+    >
       <textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}

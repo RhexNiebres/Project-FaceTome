@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { sendFollowRequest, cancelFollow } from "../apiServices/followers";
+import { sendFollowRequest, cancelFollow } from "../apiRequests/followers";
 
 const FollowButton = ({
   followingId,
@@ -84,9 +84,7 @@ const FollowButton = ({
       >
         {getButtonText()}
       </button>
-      <div>
-         {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
-      </div>
+      <div>{error && <p className="text-red-500 text-sm mt-1">{error}</p>}</div>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { deletePost } from "../apiServices/posts";
+import { deletePost } from "../apiRequests/posts";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 

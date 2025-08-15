@@ -2,7 +2,7 @@ import { useState } from "react";
 import {
   acceptFollowRequest,
   rejectFollowRequest,
-} from "../apiServices/followers";
+} from "../apiRequests/followers";
 
 const FollowRequestResponse = ({ requestId, userId, onStatusChange }) => {
   const [loading, setLoading] = useState(false);

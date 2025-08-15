@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { toggleLikePost } from "../apiServices/like";
+import { toggleLikePost } from "../apiRequests/like";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsUp as solidHeart } from "@fortawesome/free-solid-svg-icons";
 import { faThumbsUp as regularHeart } from "@fortawesome/free-regular-svg-icons";
@@ -28,7 +28,7 @@ const ToggleLikePost = ({ postId, initialLiked = false, onToggle }) => {
   return (
     <div>
       <button onClick={handleToggleLike} disabled={loading}>
-         <FontAwesomeIcon
+        <FontAwesomeIcon
           icon={liked ? solidHeart : regularHeart}
           className={`transition-all duration-300 ease-in-out transform ${
             liked ? "text-blue-500 scale-110" : "text-gray-500 scale-100"

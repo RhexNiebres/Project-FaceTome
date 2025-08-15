@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { deleteComment } from "../apiServices/comments";
+import { deleteComment } from "../apiRequests/comments";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash } from "@fortawesome/free-solid-svg-icons";
 
@@ -26,9 +26,14 @@ const DeleteComment = ({ commentId, onDelete }) => {
 
   return (
     <div>
-      <button onClick={handleDelete} disabled={loading} aria-label="Delete comment"       className={`text-sm flex items-center gap-1 transition-colors duration-200 ${
+      <button
+        onClick={handleDelete}
+        disabled={loading}
+        aria-label="Delete comment"
+        className={`text-sm flex items-center gap-1 transition-colors duration-200 ${
           loading ? "text-gray-400 cursor-not-allowed" : "hover:text-red-500"
-        }`}>
+        }`}
+      >
         {loading ? (
           "Deleting..."
         ) : (
@@ -37,7 +42,7 @@ const DeleteComment = ({ commentId, onDelete }) => {
           </>
         )}
       </button>
-       {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
     </div>
   );
 };
