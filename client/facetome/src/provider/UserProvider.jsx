@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { getUserById } from "../apiServices/users";
+import { getUserById } from "../apiRequests/users";
 import { getToken, logout } from "../services/auth";
 import { useNavigate } from "react-router-dom";
 

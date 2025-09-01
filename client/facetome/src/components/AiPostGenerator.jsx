@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { generatePost } from "../apiServices/ai";
+import { generatePost } from "../apiRequests/ai";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import CreatePost from "./CreatePost";
@@ -78,7 +78,7 @@ const AiPostGenerator = ({ onPostCreated, setShowForm }) => {
         </div>
       </form>
       {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-      
+
       <CreatePost
         receiveData={response}
         onPostCreated={onPostCreated}

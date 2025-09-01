@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { updateUser } from "../apiServices/users";
+import { updateUser } from "../apiRequests/users";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 

@@ -5,7 +5,7 @@ import UserPost from "../components/UserPosts";
 import UserProfileForm from "../components/UserProfileForm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
-import { getAllPostsForCurrentUser } from "../apiServices/posts";
+import { getAllPostsForCurrentUser } from "../apiRequests/posts";
 
 const UserProfilePage = () => {
   const { user, setUser, error, getAvatar } = useUser();
