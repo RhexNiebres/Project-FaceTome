@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { getAllUsers } from "../apiRequests/users";
 import NavBar from "../components/NavBar";
 import FollowButton from "../components/FollowButton";
-import FollowRequestResponse from "../components/FollowRequestResponse"; // Adjust path as needed
+import FollowRequestResponse from "../components/FollowRequestResponse"; 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 const FindFriendsPage = () => {
