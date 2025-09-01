@@ -26,7 +26,7 @@ exports.generatePost = async (req, res) => {
           content: `Create a medium length post based on this prompt: "${prompt}". Respond ONLY with valid JSON (no preface, no explanation). Format: { "title": "title", "content": "content" }`,
         },
       ],
-      model: "llama3-8b-8192",
+      model: "llama-3.1-8b-instant",
       temperature: 0.8,
       response_format: {
         type: "json_object",
